@@ -2,7 +2,7 @@
      <div class="col-sm-4">
          <div class="page-header float-left">
              <div class="page-title">
-                 <h1>Kriteria</h1>
+                 <h1>Alternatif</h1>
              </div>
          </div>
      </div>
@@ -11,7 +11,7 @@
              <div class="page-title">
                  <ol class="breadcrumb text-right">
                      <li><a href="dashboard">Dashboard</a></li>
-                     <li class="active">Kriteria</li>
+                     <li class="active">Alternatif</li>
                  </ol>
              </div>
          </div>
@@ -27,40 +27,27 @@
                      <div class="card-header">
                          <strong>Form</strong>
                      </div>
-                     <form class="form-horizontal" action="aksi/?aksi=kriteria_save" id="form-add-upd">
+                     <form class="form-horizontal" action="aksi/?aksi=jenis_kulit_save" id="form-add-upd">
                          <!-- begin:: id -->
-                         <input type="hidden" id="id_kriteria">
+                         <input type="hidden" id="id_jenis_kulit">
                          <!-- end:: id -->
 
                          <div class="card-body card-block">
                              <div class="row form-group">
                                  <div class="col col-md-3">
-                                     <label for="nama" class=" form-control-label">Kriteria&nbsp;*</label>
+                                     <label for="nama" class=" form-control-label">Jenis Kulit&nbsp;*</label>
                                  </div>
                                  <div class="col-12 col-md-9">
-                                     <input type="text" id="nama" name="nama" class="form-control form-control-sm" placeholder="Masukkan Nama" />
+                                     <input type="text" id="nama" name="nama" class="form-control form-control-sm" placeholder="Masukkan Jenis Kulit" />
                                      <small class="help-block form-text error"></small>
                                  </div>
                              </div>
                              <div class="row form-group">
                                  <div class="col col-md-3">
-                                     <label for="bobot" class=" form-control-label">Bobot&nbsp;*</label>
+                                     <label for="deskripsi" class=" form-control-label">Deskripsi&nbsp;*</label>
                                  </div>
                                  <div class="col-12 col-md-9">
-                                     <input type="number" id="bobot" name="bobot" class="form-control form-control-sm" placeholder="Masukkan Bobot" />
-                                     <small class="help-block form-text error"></small>
-                                 </div>
-                             </div>
-                             <div class="row form-group">
-                                 <div class="col col-md-3">
-                                     <label for="bobot" class=" form-control-label">Tipe&nbsp;*</label>
-                                 </div>
-                                 <div class="col-12 col-md-9">
-                                     <select name="tipe" id="tipe" class="form-control form-control-sm">
-                                         <option value="">- Pilih -</option>
-                                         <option value="benefit">Benefit</option>
-                                         <option value="cost">Cost</option>
-                                     </select>
+                                     <textarea name="deskripsi" id="deskripsi" class="form-control form-control-sm" placeholder="Masukkan Deskripsi"></textarea>
                                      <small class="help-block form-text error"></small>
                                  </div>
                              </div>
@@ -84,14 +71,14 @@
                                  <tr>
                                      <th>No</th>
                                      <th>Nama</th>
-                                     <th>Bobot</th>
-                                     <th>Tipe</th>
+                                     <th>Deskripsi</th>
                                      <th>Aksi</th>
                                  </tr>
                              </thead>
                              <tbody align="center">
                                  <?php
-                                    $query  = $pdo->GetAll('tb_kriteria', 'id_kriteria');
+                                    $sql    = "SELECT tb_jenis_kulit.id_jenis_kulit, tb_jenis_kulit.nama, tb_jenis_kulit.deskripsi FROM tb_jenis_kulit ORDER BY tb_jenis_kulit.id_jenis_kulit ASC";
+                                    $query  = $pdo->Query($sql);
                                     $jumlah = $query->rowCount();
                                     $no = 1;
                                     if ($jumlah > 0) {
@@ -99,11 +86,10 @@
                                          <tr>
                                              <td><?= $no++; ?></td>
                                              <td><?= $row->nama; ?></td>
-                                             <td><?= $row->bobot; ?></td>
-                                             <td><?= ucfirst($row->tipe); ?></td>
+                                             <td><?= $row->deskripsi; ?></td>
                                              <td>
-                                                 <button class="btn btn-primary btn-sm btn-action" id="upd" data-id="<?= $row->id_kriteria ?>"><i class="fa fa-edit"></i> Ubah</button>&nbsp;
-                                                 <button class="btn btn-danger btn-sm btn-action" id="del" data-id="<?= $row->id_kriteria ?>"><i class="fa fa-trash"></i> Hapus</button>
+                                                 <button class="btn btn-primary btn-sm btn-action" id="upd" data-id="<?= $row->id_jenis_kulit ?>"><i class="fa fa-edit"></i> Ubah</button>&nbsp;
+                                                 <button class="btn btn-danger btn-sm btn-action" id="del" data-id="<?= $row->id_jenis_kulit ?>"><i class="fa fa-trash"></i> Hapus</button>
                                              </td>
                                          </tr>
                                      <?php } ?>

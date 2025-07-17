@@ -24,17 +24,10 @@ if (count($error) != 0) {
 } else {
     if ($_POST['action'] === 'add') {
         // tambah
-        $qry = $pdo->GetWhere('tb_evaluasi', 'id_alternatif', $id_a);
-        $sum = $qry->rowCount();
-
-        if ($sum != 0) {
-            exit(json_encode(array('title' => 'Gagal!', 'text' => 'Maaf, data yang Anda masukkan telah diproses!', 'type' => 'warning', 'button' => 'Ok!')));
-        } else {
-            for ($i = 0; $i < count($id_k); $i++) {
-                $pdo->Insert("tb_evaluasi", ["id_jenis_kulit", "id_alternatif", "id_kriteria", "nilai"], [$id_jk, $id_a, $id_k[$i], $nil[$i]]);
-            }
-            exit(json_encode(array('title' => 'Berhasil!', 'text' => 'Data ditambah.', 'type' => 'success', 'button' => 'Ok!')));
+        for ($i = 0; $i < count($id_k); $i++) {
+            $pdo->Insert("tb_evaluasi", ["id_jenis_kulit", "id_alternatif", "id_kriteria", "nilai"], [$id_jk, $id_a, $id_k[$i], $nil[$i]]);
         }
+        exit(json_encode(array('title' => 'Berhasil!', 'text' => 'Data ditambah.', 'type' => 'success', 'button' => 'Ok!')));
     } else {
         // ubah
         for ($i = 0; $i < count($id_k); $i++) {

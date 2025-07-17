@@ -27,6 +27,12 @@
                         Alternatif
                     </a>
                 </li>
+                <li class="<?= ($_REQUEST['content'] == "jenis_kulit") ? 'active' : '' ?>">
+                    <a href="jenis_kulit">
+                        <i class="menu-icon fa fa-list"></i>
+                        Jenis Kulit
+                    </a>
+                </li>
                 <li class="<?= ($_REQUEST['content'] == "kriteria") ? 'active' : '' ?>">
                     <a href="kriteria">
                         <i class="menu-icon fa fa-list"></i>
@@ -51,10 +57,10 @@
                         Evaluasi
                     </a>
                 </li>
-                <li class="<?= ($_REQUEST['content'] == "algoritma") ? 'active' : '' ?>">
-                    <a href="algoritma">
+                <li class="<?= ($_REQUEST['content'] == "konsultasi") ? 'active' : '' ?>">
+                    <a href="konsultasi">
                         <i class="menu-icon fa fa-list"></i>
-                        Algoritma
+                        Konsultasi
                     </a>
                 </li>
                 <h3 class="menu-title">Pustaka</h3>

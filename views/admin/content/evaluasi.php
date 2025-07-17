@@ -98,6 +98,14 @@
                 <!-- end:: form -->
 
                 <?php
+                // untuk jenis kulit
+                $sql_jenis_kulit = "SELECT * FROM tb_jenis_kulit";
+                $res_jenis_kulit = $pdo->Query($sql_jenis_kulit);
+                $jenis_kulit     = [];
+                while ($row_jk = $res_jenis_kulit->fetch(PDO::FETCH_OBJ)) {
+                    $jenis_kulit[$row_jk->id_jenis_kulit] = $row_jk->nama;
+                }
+
                 // untuk alternatif
                 $sql_alternatif = "SELECT * FROM tb_alternatif";
                 $res_alternatif = $pdo->Query($sql_alternatif);
@@ -123,11 +131,11 @@
                 }
 
                 // untuk evaluasi
-                $sql_evaluasi = "SELECT * FROM tb_evaluasi ORDER BY id_alternatif, id_kriteria";
+                $sql_evaluasi = "SELECT * FROM tb_evaluasi ORDER BY id_jenis_kulit, id_alternatif, id_kriteria";
                 $res_evaluasi = $pdo->Query($sql_evaluasi);
                 $evaluasi     = [];
                 while ($row_e = $res_evaluasi->fetch(PDO::FETCH_OBJ)) {
-                    $evaluasi[$row_e->id_alternatif][$row_e->id_kriteria] = $row_e->nilai;
+                    $evaluasi[$row_e->id_jenis_kulit][$row_e->id_alternatif][$row_e->id_kriteria] = $row_e->nilai;
                 }
                 ?>
 
@@ -141,29 +149,27 @@
                             <thead align="center">
                                 <tr>
                                     <th>No</th>
+                                    <th>Jenis Kulit</th>
                                     <th>Alternatif</th>
                                     <?php foreach ($kriteria as $key => $value) { ?>
                                         <th><?= $value ?></th>
                                     <?php } ?>
-                                    <th>Aksi</th>
                                 </tr>
                             </thead>
                             <tbody align="center">
                                 <?php
                                 $no = 1;
                                 foreach ($evaluasi as $key => $value) { ?>
-                                    <tr>
-                                        <td><?= $no++ ?></td>
-                                        <td><?= $alternatif[$key] ?></td>
-                                        <?php
-                                        foreach ($value as $k => $v) { ?>
-                                            <td><?= $kriteria_sub[$k][$v] ?></td>
-                                        <?php } ?>
-                                        <td>
-                                            <button class="btn btn-primary btn-sm btn-action" id="upd" data-id="<?= $key ?>"><i class="fa fa-edit"></i> Ubah</button>&nbsp;
-                                            <button class="btn btn-danger btn-sm btn-action" id="del" data-id="<?= $key ?>"><i class="fa fa-trash"></i> Hapus</button>
-                                        </td>
-                                    </tr>
+                                    <?php foreach ($value as $k => $v) { ?>
+                                        <tr>
+                                            <td><?= $no++ ?></td>
+                                            <td><?= $jenis_kulit[$key] ?></td>
+                                            <td><?= $alternatif[$k] ?></td>
+                                            <?php foreach ($v as $k => $v) { ?>
+                                                <td><?= $kriteria_sub[$k][$v] ?></td>
+                                            <?php } ?>
+                                        </tr>
+                                    <?php } ?>
                                 <?php } ?>
                             </tbody>
                         </table>

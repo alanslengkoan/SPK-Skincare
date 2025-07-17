@@ -1,4 +1,6 @@
    <?php
+    $id_jenis_kulit = $_POST['id_jenis_kulit'];
+
     // untuk alternatif
     $sql_alternatif = "SELECT id_alternatif, nama FROM tb_alternatif";
     $res_alternatif = $pdo->Query($sql_alternatif);
@@ -24,7 +26,7 @@
     }
 
     // untuk evaluasi
-    $sql_evaluasi = "SELECT * FROM tb_evaluasi ORDER BY id_alternatif, id_kriteria";
+    $sql_evaluasi = "SELECT * FROM tb_evaluasi WHERE id_jenis_kulit = $id_jenis_kulit ORDER BY id_alternatif, id_kriteria";
     $res_evaluasi = $pdo->Query($sql_evaluasi);
     $sample = [];
     while ($row_e = $res_evaluasi->fetch(PDO::FETCH_OBJ)) {
@@ -88,11 +90,11 @@
                                     ?>
 
                                    <?php foreach ($nma_kriteria as $key => $value) { ?>
-                                   <tr>
-                                       <td><?= $value ?></td>
-                                       <td><?= $bobot[$key] ?></td>
-                                       <td><?= $w[$key] ?></td>
-                                   </tr>
+                                       <tr>
+                                           <td><?= $value ?></td>
+                                           <td><?= $bobot[$key] ?></td>
+                                           <td><?= $w[$key] ?></td>
+                                       </tr>
                                    <?php } ?>
                                </tbody>
                            </table>
@@ -109,18 +111,18 @@
                                    <tr>
                                        <th>Alternatif</th>
                                        <?php foreach ($nma_kriteria as $key => $value) { ?>
-                                       <th><?= $value ?></th>
+                                           <th><?= $value ?></th>
                                        <?php } ?>
                                    </tr>
                                </thead>
                                <tbody align="center">
                                    <?php foreach ($nma_alternatif as $key => $value) { ?>
-                                   <tr>
-                                       <td><?= $value['alternatif'] ?></td>
-                                       <?php foreach ($kriteria as $k => $v) { ?>
-                                       <td><?= $sample[$key][$k] ?></td>
-                                       <?php } ?>
-                                   </tr>
+                                       <tr>
+                                           <td><?= $value['alternatif'] ?></td>
+                                           <?php foreach ($kriteria as $k => $v) { ?>
+                                               <td><?= $sample[$key][$k] ?></td>
+                                           <?php } ?>
+                                       </tr>
                                    <?php } ?>
                                </tbody>
                            </table>
@@ -156,19 +158,19 @@
                                    <tr>
                                        <th>Tipe</th>
                                        <?php foreach ($kriteria as $key => $value) { ?>
-                                       <th><?= $value['nama'] ?></th>
+                                           <th><?= $value['nama'] ?></th>
                                        <?php } ?>
                                    </tr>
                                    <tr>
                                        <td>Min</td>
                                        <?php foreach ($kriteria as $key => $value) { ?>
-                                       <td><?= $c_min[$key] ?></td>
+                                           <td><?= $c_min[$key] ?></td>
                                        <?php } ?>
                                    </tr>
                                    <tr>
                                        <td>Max</td>
                                        <?php foreach ($kriteria as $key => $value) { ?>
-                                       <td><?= $c_max[$key] ?></td>
+                                           <td><?= $c_max[$key] ?></td>
                                        <?php } ?>
                                    </tr>
                                </thead>
@@ -205,18 +207,18 @@
                                    <tr>
                                        <th>Alternatif</th>
                                        <?php foreach ($nma_kriteria as $key => $value) { ?>
-                                       <th><?= $value ?></th>
+                                           <th><?= $value ?></th>
                                        <?php } ?>
                                    </tr>
                                </thead>
                                <tbody align="center">
                                    <?php foreach ($nma_alternatif as $key => $value) { ?>
-                                   <tr>
-                                       <td><?= $value['alternatif'] ?></td>
-                                       <?php for ($i = 1; $i <= $jumlah_kriteria; $i++) { ?>
-                                       <td><?= $value[$i] ?></td>
-                                       <?php } ?>
-                                   </tr>
+                                       <tr>
+                                           <td><?= $value['alternatif'] ?></td>
+                                           <?php for ($i = 1; $i <= $jumlah_kriteria; $i++) { ?>
+                                               <td><?= $value[$i] ?></td>
+                                           <?php } ?>
+                                       </tr>
                                    <?php } ?>
                                </tbody>
                            </table>
@@ -248,10 +250,10 @@
                                </thead>
                                <tbody align="center">
                                    <?php foreach ($V as $key => $value) { ?>
-                                   <tr>
-                                       <td><?= $alternatif[$key] ?></td>
-                                       <td><?= $V[$key] ?></td>
-                                   </tr>
+                                       <tr>
+                                           <td><?= $alternatif[$key] ?></td>
+                                           <td><?= $V[$key] ?></td>
+                                       </tr>
                                    <?php } ?>
                                </tbody>
                            </table>
