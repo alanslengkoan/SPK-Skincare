@@ -28,9 +28,17 @@ foreach ($_POST as $key => $value) {
     }
 }
 
+$today = new DateTime();
+$lahir = new DateTime($tgl_lahir);
+$umur  = $today->diff($lahir)->y;
+
 if (count($error) != 0) {
     exit(json_encode(array('title' => 'Gagal!', 'text' => 'Data gagal ditambahkan!', 'type' => 'error', 'button' => 'Ok!', 'errors' => $error)));
 } else {
+    if ($umur < 13) {
+        exit(json_encode(array('title' => 'Gagal!', 'text' => 'Anda belum cukup umur!', 'type' => 'warning', 'button' => 'Ok!')));
+    }
+
     if ($password != $password_confirm) {
         exit(json_encode(array('title' => 'Gagal!', 'text' => 'Password yang Anda masukkan tidak sama!', 'type' => 'warning', 'button' => 'Ok!')));
     } else {

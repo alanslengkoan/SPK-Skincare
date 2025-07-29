@@ -21,7 +21,9 @@
                 $.ajax({
                     method: 'POST',
                     url: $(this).attr('action'),
-                    data: $(this).serialize(),
+                    data: new FormData(this),
+                    contentType: false,
+                    processData: false,
                     dataType: 'json',
                     beforeSend: function() {
                         $('#add').attr('disabled', 'disabled');
@@ -29,6 +31,15 @@
                     },
                     success: function(response) {
                         if (response.type === 'success') {
+                            swal({
+                                title: response.title,
+                                text: response.text,
+                                icon: response.type,
+                                button: response.button,
+                            }).then((value) => {
+                                location.reload();
+                            });
+                        } else if (response.type === 'warning') {
                             swal({
                                 title: response.title,
                                 text: response.text,
@@ -103,21 +114,36 @@
                     success: function(response) {
                         $('#id_alternatif').attr('name', 'id_alternatif');
 
-                        $.each(response, function(key, value) {
-                            if (key) {
-                                if (($('#' + key).prop('tagName') === 'INPUT' || $('#' + key).prop('tagName') === 'TEXTAREA')) {
-                                    $('#' + key).val(value);
-                                } else if ($('#' + key).prop('tagName') === 'SELECT') {
-                                    $('#' + key).val(value);
-                                }
-                            }
-                        });
+                        var lokasi_gambar = "../../assets/uploads/alternatif/" + response.gambar;
+                        $('#lihat_gambar').html(`<img src="` + lokasi_gambar + `" width="100" heigth="100" />`);
+                        $('#centang_gambar').html(`<input type="checkbox" name="ubah_gambar" id="ubah_gambar" /> Ubah gambar!`);
+
+                        $('#id_alternatif').val(response.id_alternatif);
+                        $('#nama').val(response.nama);
+                        $('#inpgambar').attr('disabled', 'disabled');
+                        $('#inpgambar').removeAttr('id');
 
                         $('#add').html('<i class="fa fa-edit"></i> Ubah');
                         ini.removeAttr('disabled');
                         ini.html('<i class="fa fa-edit"></i>&nbsp;Ubah');
                     }
                 });
+            });
+        }();
+
+        // untuk ubah gambar
+        var untukUbahGambar = function() {
+            $(document).on('click', '#ubah_gambar', function() {
+                var ini = $(this);
+                if (ini.is(':checked')) {
+                    $("input[name*='inpgambar']").removeAttr('disabled');
+                    $("input[name*='inpgambar']").attr('id', 'inpgambar');
+                } else {
+                    $("input[name*='inpgambar']").attr('disabled', 'disabled');
+                    $("input[name*='inpgambar']").removeAttr('id');
+                    $("input[name*='inpgambar']").removeAttr('required');
+                    ini.parent().parent().find('#error').empty();
+                }
             });
         }();
 

@@ -12,11 +12,14 @@ $mylog = new my_login;
 $myfun = new my_function;
 
 // untuk alternatif
-$sql_alternatif = "SELECT id_alternatif, nama FROM tb_alternatif";
+$sql_alternatif = "SELECT id_alternatif, nama, gambar FROM tb_alternatif";
 $res_alternatif = $pdo->Query($sql_alternatif);
 $alternatif = [];
 while ($row_a = $res_alternatif->fetch(PDO::FETCH_OBJ)) {
-    $alternatif[$row_a->id_alternatif] = $row_a->nama;
+    $alternatif[$row_a->id_alternatif] = [
+        "nama"   => $row_a->nama,
+        "gambar" => $row_a->gambar,
+    ];
 }
 
 // ambil data laporan
@@ -80,6 +83,7 @@ $hasil_metode = json_decode($rowLaporan->hasil, true);
             <tr>
                 <th>Ranking</th>
                 <th>Alternatif</th>
+                <th>Gambar</th>
                 <th>Poin</th>
             </tr>
         </thead>
@@ -92,7 +96,8 @@ $hasil_metode = json_decode($rowLaporan->hasil, true);
             foreach ($hasil_metode as $key => $value) { ?>
                 <tr>
                     <td><?= $ranking++ ?></td>
-                    <td><?= $alternatif[$key] ?></td>
+                    <td><?= $alternatif[$key]['nama'] ?></td>
+                    <td><img src="http://localhost/skripsi/SPK-Skincare/assets/uploads/alternatif/<?= $alternatif[$key]['gambar'] ?>" width="100" heigth="100" /></td>
                     <td><?= $value ?></td>
                 </tr>
             <?php } ?>
@@ -102,7 +107,7 @@ $hasil_metode = json_decode($rowLaporan->hasil, true);
     <br /><br />
 
     <p>
-        Berdasarkan Hasil perhitungan Metode Smart, Alternatif <b><?= $alternatif[$index] ?></b> dengan nilai akhir <b><?= $hasil_metode[$index] ?></b> adalah Peringkat 1.
+        Berdasarkan Hasil perhitungan Metode Smart, Alternatif <b><?= $alternatif[$index]['nama'] ?></b> dengan nilai akhir <b><?= $hasil_metode[$index] ?></b> adalah Peringkat 1.
     </p>
 </div>
 

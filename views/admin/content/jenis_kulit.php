@@ -51,6 +51,16 @@
                                      <small class="help-block form-text error"></small>
                                  </div>
                              </div>
+                             <div class="row form-group">
+                                 <div class="col col-md-3">
+                                     <label for="inpgambar" class=" form-control-label">Gambar&nbsp;*</label>
+                                 </div>
+                                 <div class="col-12 col-md-9">
+                                     <div id="lihat_gambar" style="padding-bottom: 10px"></div>
+                                     <input type="file" class="form-control form-control-sm" name="inpgambar" id="inpgambar" />
+                                     <div id="centang_gambar" style="padding-top: 10px"></div>
+                                 </div>
+                             </div>
                          </div>
                          <div class="card-footer">
                              <button type="submit" name="add" id="add" class="btn btn-success btn-sm">
@@ -72,12 +82,13 @@
                                      <th>No</th>
                                      <th>Nama</th>
                                      <th>Deskripsi</th>
+                                     <th>Gambar</th>
                                      <th>Aksi</th>
                                  </tr>
                              </thead>
                              <tbody align="center">
                                  <?php
-                                    $sql    = "SELECT tb_jenis_kulit.id_jenis_kulit, tb_jenis_kulit.nama, tb_jenis_kulit.deskripsi FROM tb_jenis_kulit ORDER BY tb_jenis_kulit.id_jenis_kulit ASC";
+                                    $sql    = "SELECT tb_jenis_kulit.id_jenis_kulit, tb_jenis_kulit.nama, tb_jenis_kulit.deskripsi, tb_jenis_kulit.gambar FROM tb_jenis_kulit ORDER BY tb_jenis_kulit.id_jenis_kulit ASC";
                                     $query  = $pdo->Query($sql);
                                     $jumlah = $query->rowCount();
                                     $no = 1;
@@ -87,6 +98,9 @@
                                              <td><?= $no++; ?></td>
                                              <td><?= $row->nama; ?></td>
                                              <td><?= $row->deskripsi; ?></td>
+                                             <td>
+                                                 <img src="../../assets/uploads/jenis_kulit/<?= $row->gambar ?>" width="100" height="100" />
+                                             </td>
                                              <td>
                                                  <button class="btn btn-primary btn-sm btn-action" id="upd" data-id="<?= $row->id_jenis_kulit ?>"><i class="fa fa-edit"></i> Ubah</button>&nbsp;
                                                  <button class="btn btn-danger btn-sm btn-action" id="del" data-id="<?= $row->id_jenis_kulit ?>"><i class="fa fa-trash"></i> Hapus</button>
