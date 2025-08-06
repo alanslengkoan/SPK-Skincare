@@ -34,7 +34,12 @@
     }
 
     // ambil alternatif
-    $sql_id_alternatif = "SELECT id_alternatif FROM tb_evaluasi WHERE id_jenis_kulit = $id_jenis_kulit AND (" . substr($where, 0, -3) . ")";
+    if ($where == "") {
+        $sql_id_alternatif = "SELECT id_alternatif FROM tb_evaluasi WHERE id_jenis_kulit = $id_jenis_kulit";
+    } else {
+        $where = substr($where, 0, -3);
+        $sql_id_alternatif = "SELECT id_alternatif FROM tb_evaluasi WHERE id_jenis_kulit = $id_jenis_kulit AND ($where)";
+    }
     $res_id_alternatif = $pdo->Query($sql_id_alternatif);
     $get_id_alternatif = [];
     while ($row_e = $res_id_alternatif->fetch(PDO::FETCH_OBJ)) {
