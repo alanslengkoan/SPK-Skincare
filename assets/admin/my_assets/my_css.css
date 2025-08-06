@@ -10,13 +10,13 @@
 }
 
 .table thead th {
-    background-color: #272C33 !important;
+    background-color: #f36b9d !important;
     border-color: #fff;
     color: white;
 }
 
 .bg-custom {
-    background-color: #272C33 !important;
+    background-color: #f36b9d !important;
 }
 
 /* loading */

@@ -1197,7 +1197,7 @@ textarea {
 }
 
 aside.left-panel {
-  background: #272C33;
+  background: #f36b9d;
   display: table-cell;
   height: 100vh;
   min-height: 100%;
@@ -1208,7 +1208,7 @@ aside.left-panel {
 }
 
 .navbar {
-  background: #272C33;
+  background: #f36b9d;
   border-radius: 0;
   border: none;
   display: block;
@@ -1355,7 +1355,7 @@ aside.left-panel {
 }
 
 .navbar .navbar-nav li.menu-item-has-children .sub-menu {
-  background: #272C33;
+  background: #f36b9d;
   border: none;
   box-shadow: none;
   overflow-y: hidden;
@@ -1640,7 +1640,7 @@ header.fixed-top {
 .search-trigger {
   background: transparent;
   border: none;
-  color: #272C33;
+  color: #f36b9d;
   cursor: pointer;
   font-size: 16px;
   height: 41px;
@@ -1722,7 +1722,7 @@ header .form-inline .search-form.close {
 .header-left .dropdown .dropdown-toggle {
   background: transparent;
   border: none;
-  color: #272C33;
+  color: #f36b9d;
   font-size: 16px;
 }
 
@@ -1747,7 +1747,7 @@ header .form-inline .search-form.close {
 .header-left .dropdown .dropdown-toggle:visited {
   background: none !important;
   border-color: transparent !important;
-  color: #272C33 !important;
+  color: #f36b9d !important;
 }
 
 .header-left .dropdown .dropdown-menu {
@@ -1765,7 +1765,7 @@ header .form-inline .search-form.close {
 }
 
 .header-left .dropdown .dropdown-menu .dropdown-item {
-  color: #272C33;
+  color: #f36b9d;
   font-size: 13px;
   padding: 10px 15px 3px;
   text-overflow: ellipsis;
@@ -1843,7 +1843,7 @@ header .form-inline .search-form.close {
 }
 
 .user-area .user-menu .nav-link {
-  color: #272c33;
+  color: #f36b9d;
   display: block;
   font-size: 14px;
   line-height: 22px;
@@ -2861,18 +2861,18 @@ header .form-inline .search-form.close {
 
 .dataTables_paginate .pagination li a {
   border-radius: 0 !important;
-  color: #272C33;
+  color: #f36b9d;
 }
 
 .dataTables_paginate .pagination li.active a {
-  background: #272C33;
-  border-color: #272C33;
+  background: #f36b9d;
+  border-color: #f36b9d;
   color: #fff;
 }
 
 .dataTables_paginate .pagination li:hover a {
-  background: #272C33;
-  border-color: #272C33;
+  background: #f36b9d;
+  border-color: #f36b9d;
   color: #fff;
 }
 

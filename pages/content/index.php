@@ -55,15 +55,7 @@
     <!-- end:: navbar -->
 
     <!-- begin:: header -->
-    <header class="intro-header">
-        <div class="container">
-            <div class="intro-message">
-                <h1>Sistem Pendukung Keputusan</h1>
-                <h3>Penentuan Skincare Sesuai Lisensi BPOM pada TikTok Shop Menggunakan Metode SMART</h3>
-                <hr class="intro-divider">
-            </div>
-        </div>
-    </header>
+    <header class="intro-header"></header>
     <!-- end:: header -->
 
     <!-- begin:: content -->
