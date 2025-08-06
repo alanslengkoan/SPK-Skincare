@@ -58,8 +58,8 @@
     <header class="intro-header">
         <div class="container">
             <div class="intro-message">
-                <h1>Metode Smart</h1>
-                <h3>Sistem Pendukung Keputusan</h3>
+                <h1>Sistem Pendukung Keputusan</h1>
+                <h3>Penentuan Skincare Sesuai Lisensi BPOM pada TikTok Shop Menggunakan Metode SMART</h3>
                 <hr class="intro-divider">
             </div>
         </div>

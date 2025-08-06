@@ -1,14 +1,14 @@
    <?php
     $id_jenis_kulit = $_POST['id_jenis_kulit'];
+    $id_kriteria = $_POST['id_kriteria'];
+    $nilai = $_POST['nilai'];
 
-    // untuk alternatif
-    $sql_alternatif = "SELECT id_alternatif, nama FROM tb_alternatif";
-    $res_alternatif = $pdo->Query($sql_alternatif);
-    $alternatif     = [];
-    $nma_alternatif = [];
-    while ($row_a = $res_alternatif->fetch(PDO::FETCH_OBJ)) {
-        $alternatif[$row_a->id_alternatif] = $row_a->nama;
-        $nma_alternatif[$row_a->id_alternatif]['alternatif'] = $row_a->nama;
+    // untuk jenis kulit
+    $sql_jenis_kulit = "SELECT id_jenis_kulit, nama FROM tb_jenis_kulit";
+    $res_jenis_kulit = $pdo->Query($sql_jenis_kulit);
+    $jenis_kulit     = [];
+    while ($row_j = $res_jenis_kulit->fetch(PDO::FETCH_OBJ)) {
+        $jenis_kulit[$row_j->id_jenis_kulit] = $row_j->nama;
     }
 
     // untuk kriteria
@@ -25,8 +25,39 @@
         $nma_kriteria[$row_k->id_kriteria] = $row_k->nama;
     }
 
+    // filter
+    $where = "";
+    foreach ($id_kriteria as $key => $value) {
+        if ($nilai[$key] != "") {
+            $where .= "nilai = $nilai[$key] OR ";
+        }
+    }
+
+    // ambil alternatif
+    $sql_id_alternatif = "SELECT id_alternatif FROM tb_evaluasi WHERE id_jenis_kulit = $id_jenis_kulit AND (" . substr($where, 0, -3) . ")";
+    $res_id_alternatif = $pdo->Query($sql_id_alternatif);
+    $get_id_alternatif = [];
+    while ($row_e = $res_id_alternatif->fetch(PDO::FETCH_OBJ)) {
+        $get_id_alternatif[] = $row_e->id_alternatif;
+    }
+
+    if (count($get_id_alternatif) == 0) {
+        echo "<script>alert('Data tidak ditemukan'); window.location.href = 'konsultasi';</script>";
+        exit;
+    }
+
+    // untuk alternatif
+    $sql_alternatif = "SELECT id_alternatif, nama FROM tb_alternatif WHERE id_alternatif IN (" . implode(",", $get_id_alternatif) . ")";
+    $res_alternatif = $pdo->Query($sql_alternatif);
+    $alternatif     = [];
+    $nma_alternatif = [];
+    while ($row_a = $res_alternatif->fetch(PDO::FETCH_OBJ)) {
+        $alternatif[$row_a->id_alternatif] = $row_a->nama;
+        $nma_alternatif[$row_a->id_alternatif]['alternatif'] = $row_a->nama;
+    }
+
     // untuk evaluasi
-    $sql_evaluasi = "SELECT * FROM tb_evaluasi WHERE id_jenis_kulit = $id_jenis_kulit ORDER BY id_alternatif, id_kriteria";
+    $sql_evaluasi = "SELECT * FROM tb_evaluasi WHERE id_jenis_kulit = $id_jenis_kulit AND id_alternatif IN (" . implode(",", $get_id_alternatif) . ") ORDER BY id_alternatif, id_kriteria";
     $res_evaluasi = $pdo->Query($sql_evaluasi);
     $sample = [];
     while ($row_e = $res_evaluasi->fetch(PDO::FETCH_OBJ)) {
@@ -93,7 +124,7 @@
                                        <tr>
                                            <td><?= $value ?></td>
                                            <td><?= $bobot[$key] ?></td>
-                                           <td><?= $w[$key] ?></td>
+                                           <td><?= round($w[$key], 4) ?></td>
                                        </tr>
                                    <?php } ?>
                                </tbody>
@@ -232,13 +263,10 @@
                             $perangkingan[$a] += $u * $w[$k];
                         }
                     }
-
-                    arsort($perangkingan);
-                    $index = key($perangkingan);
                     ?>
                    <div class="card">
                        <div class="card-header">
-                           <h5>Perangkingan (Hasil Akhir)</h5>
+                           <h5>Hasil</h5>
                        </div>
                        <div class="card-body">
                            <table class="table table-striped table-bordered table-hover">
@@ -252,7 +280,7 @@
                                    <?php foreach ($perangkingan as $key => $value) { ?>
                                        <tr>
                                            <td><?= $alternatif[$key] ?></td>
-                                           <td><?= $perangkingan[$key] ?></td>
+                                           <td><?= round($perangkingan[$key], 4) ?></td>
                                        </tr>
                                    <?php } ?>
                                </tbody>
@@ -261,10 +289,34 @@
                    </div>
                    <div class="card">
                        <div class="card-header">
-                           <h5>Hasil</h5>
+                           <h5>Perangkingan (Hasil Akhir)</h5>
                        </div>
                        <div class="card-body">
-                           Berdasarkan Hasil perhitungan Metode Smart, Alternatif <b><?= $alternatif[$index] ?></b> dengan nilai akhir <b><?= $perangkingan[$index] ?></b> adalah Peringkat 1.
+                           <table class="table table-striped table-bordered table-hover">
+                               <thead align="center">
+                                   <tr>
+                                       <th>Peringkat</th>
+                                       <th>Nama</th>
+                                       <th>Hasil</th>
+                                   </tr>
+                               </thead>
+                               <tbody align="center">
+                                   <?php
+                                    $rank = 1;
+                                    arsort($perangkingan);
+                                    $index = key($perangkingan);
+                                    foreach ($perangkingan as $key => $value) { ?>
+                                       <?php if ($perangkingan[$key] > 0.5) { ?>
+                                           <tr>
+                                               <td><?= $rank++ ?></td>
+                                               <td><?= $alternatif[$key] ?></td>
+                                               <td><?= round($perangkingan[$key], 4) ?></td>
+                                           </tr>
+                                       <?php } ?>
+                                   <?php } ?>
+                               </tbody>
+                           </table>
+                           Berdasarkan Hasil Analisis Algoritma maka diperoleh rekomendasi keputusan untuk jenis kulit <b><?= $jenis_kulit[$id_jenis_kulit] ?></b> yaitu <b><?= $alternatif[$index] ?></b> dengan nilai akhir <b><?= round($perangkingan[$index], 4) ?></b>.
                        </div>
                    </div>
                </div>
@@ -278,5 +330,5 @@
     $member       = $pdo->GetWhere('tb_member', 'id_users', $_SESSION['id_users']);
     $rowMember    = $member->fetch(PDO::FETCH_OBJ);
 
-    $pdo->Insert("tb_riwayat", ["id_member", "hasil", "tgl"], [$rowMember->id_member, $hasil_metode, date('Y-m-d')]);
+    $pdo->Insert("tb_riwayat", ["id_member", "id_jenis_kulit", "hasil", "tgl"], [$rowMember->id_member, $id_jenis_kulit, $hasil_metode, date('Y-m-d')]);
     ?>

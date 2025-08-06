@@ -69,15 +69,6 @@
                             <small class="help-block form-text error"></small>
                         </div>
                         <div class="form-group">
-                            <label>Jenis Kelamin&nbsp;*</label>
-                            <select class="form-control form-control-sm" name="kelamin" id="kelamin">
-                                <option value="">Pilih</option>
-                                <option value="L">Laki-laki</option>
-                                <option value="P">Perempuan</option>
-                            </select>
-                            <small class="help-block form-text error"></small>
-                        </div>
-                        <div class="form-group">
                             <label>Alamat&nbsp;*</label>
                             <textarea class="form-control form-control-sm" name="alamat" id="alamat" placeholder="Masukkan Alamat"></textarea>
                             <small class="help-block form-text error"></small>

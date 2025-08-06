@@ -11,19 +11,31 @@ $mylog = new my_login;
 // untuk class my_function
 $myfun = new my_function;
 
+// untuk jenis kulit
+$sql_jenis_kulit = "SELECT id_jenis_kulit, nama FROM tb_jenis_kulit";
+$res_jenis_kulit = $pdo->Query($sql_jenis_kulit);
+$jenis_kulit     = [];
+while ($row_j = $res_jenis_kulit->fetch(PDO::FETCH_OBJ)) {
+    $jenis_kulit[$row_j->id_jenis_kulit] = $row_j->nama;
+}
+
 // untuk alternatif
-$sql_alternatif = "SELECT id_alternatif, nama FROM tb_alternatif";
+$sql_alternatif = "SELECT id_alternatif, nama, gambar FROM tb_alternatif";
 $res_alternatif = $pdo->Query($sql_alternatif);
 $alternatif = [];
 while ($row_a = $res_alternatif->fetch(PDO::FETCH_OBJ)) {
-    $alternatif[$row_a->id_alternatif] = $row_a->nama;
+    $alternatif[$row_a->id_alternatif] = [
+        "nama"   => $row_a->nama,
+        "gambar" => $row_a->gambar,
+    ];
 }
 
 // ambil data laporan
-$id_riwayat   = $_GET['id_riwayat'];
-$qryLaporan   = $pdo->GetWhere('tb_riwayat', 'id_riwayat', $id_riwayat);
-$rowLaporan   = $qryLaporan->fetch(PDO::FETCH_OBJ);
-$hasil_metode = json_decode($rowLaporan->hasil, true);
+$id_riwayat     = $_GET['id_riwayat'];
+$qryLaporan     = $pdo->GetWhere('tb_riwayat', 'id_riwayat', $id_riwayat);
+$rowLaporan     = $qryLaporan->fetch(PDO::FETCH_OBJ);
+$hasil_metode   = json_decode($rowLaporan->hasil, true);
+$id_jenis_kulit = $rowLaporan->id_jenis_kulit;
 ?>
 
 <!-- CSS -->
@@ -80,6 +92,7 @@ $hasil_metode = json_decode($rowLaporan->hasil, true);
             <tr>
                 <th>Ranking</th>
                 <th>Alternatif</th>
+                <th>Gambar</th>
                 <th>Poin</th>
             </tr>
         </thead>
@@ -87,14 +100,16 @@ $hasil_metode = json_decode($rowLaporan->hasil, true);
             <?php
             arsort($hasil_metode);
             $index = key($hasil_metode);
-
             $ranking = 1;
             foreach ($hasil_metode as $key => $value) { ?>
-                <tr>
-                    <td><?= $ranking++ ?></td>
-                    <td><?= $alternatif[$key] ?></td>
-                    <td><?= $value ?></td>
-                </tr>
+                <?php if ($value > 0.5) { ?>
+                    <tr>
+                        <td><?= $ranking++ ?></td>
+                        <td><?= $alternatif[$key]['nama'] ?></td>
+                        <td><img src="http://localhost/skripsi/SPK-Skincare/assets/uploads/alternatif/<?= $alternatif[$key]['gambar'] ?>" width="100" heigth="100" /></td>
+                        <td><?= round($value, 4) ?></td>
+                    </tr>
+                <?php } ?>
             <?php } ?>
         </tbody>
     </table>
@@ -102,7 +117,7 @@ $hasil_metode = json_decode($rowLaporan->hasil, true);
     <br /><br />
 
     <p>
-        Berdasarkan Hasil perhitungan Metode Smart, Alternatif <b><?= $alternatif[$index] ?></b> dengan nilai akhir <b><?= $hasil_metode[$index] ?></b> adalah Peringkat 1.
+        Berdasarkan Hasil Analisis Algoritma maka diperoleh rekomendasi keputusan untuk jenis kulit <b><?= $jenis_kulit[$id_jenis_kulit] ?></b> yaitu <b><?= $alternatif[$index]['nama'] ?></b> dengan nilai akhir <b><?= $hasil_metode[$index] ?></b>.
     </p>
 </div>
 

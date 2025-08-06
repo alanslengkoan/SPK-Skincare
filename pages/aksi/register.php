@@ -5,7 +5,7 @@ $email            = htmlspecialchars($_POST['email'], ENT_QUOTES);
 $telepon          = htmlspecialchars($_POST['telepon'], ENT_QUOTES);
 $tgl_lahir        = htmlspecialchars($_POST['tgl_lahir'], ENT_QUOTES);
 $tmp_lahir        = htmlspecialchars($_POST['tmp_lahir'], ENT_QUOTES);
-$kelamin          = htmlspecialchars($_POST['kelamin'], ENT_QUOTES);
+// $kelamin          = htmlspecialchars($_POST['kelamin'], ENT_QUOTES);
 $alamat           = htmlspecialchars($_POST['alamat'], ENT_QUOTES);
 $username         = htmlspecialchars($_POST['username'], ENT_QUOTES);
 $password         = htmlspecialchars($_POST['password'], ENT_QUOTES);
@@ -46,7 +46,7 @@ if (count($error) != 0) {
 
         $ins1 = $pdo->Insert("tb_users", ["id_users", "nama", "email", "username", "password", "level", "status"], [$id_users, $nama, $email, $username, $passhash, $level, $status]);
 
-        $ins2 = $pdo->Insert("tb_member", ["id_users", "tgl_lahir", "tmp_lahir", "kelamin", "telepon", "alamat"], [$id_users, $tgl_lahir, $tmp_lahir, $kelamin, $telepon, $alamat]);
+        $ins2 = $pdo->Insert("tb_member", ["id_users", "tgl_lahir", "tmp_lahir", "telepon", "alamat"], [$id_users, $tgl_lahir, $tmp_lahir, $telepon, $alamat]);
 
         if ($ins1 == 1 && $ins2 == 1) {
             exit(json_encode(array('title' => 'Berhasil!', 'text' => 'Anda telah terdaftar, silahkan login!', 'type' => 'success', 'button' => 'Ok!')));
