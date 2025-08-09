@@ -11,7 +11,7 @@ $mylog = new my_login;
 // untuk class my_function
 $myfun = new my_function;
 
-// untuk jenis kulit
+// untuk jenis_kulit
 $sql_jenis_kulit = "SELECT id_jenis_kulit, nama FROM tb_jenis_kulit";
 $res_jenis_kulit = $pdo->Query($sql_jenis_kulit);
 $jenis_kulit     = [];
