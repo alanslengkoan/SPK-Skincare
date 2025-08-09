@@ -96,7 +96,8 @@
                     dataType: 'json',
                     url: "aksi/?aksi=evaluasi_get",
                     data: {
-                        id: ini.data('id')
+                        id_jenis_kulit: ini.data('id_jenis_kulit'),
+                        id_alternatif: ini.data('id_alternatif')
                     },
                     beforeSend: function() {
                         ini.attr('disabled', 'disabled');
@@ -140,7 +141,8 @@
                             url: "aksi/?aksi=evaluasi_del",
                             dataType: 'json',
                             data: {
-                                id: ini.data('id'),
+                                id_jenis_kulit: ini.data('id_jenis_kulit'),
+                                id_alternatif: ini.data('id_alternatif'),
                             },
                             beforeSend: function() {
                                 ini.attr('disabled', 'disabled');

@@ -29,7 +29,7 @@
     $where = "";
     foreach ($id_kriteria as $key => $value) {
         if ($nilai[$key] != "") {
-            $where .= "nilai = $nilai[$key] OR ";
+            $where .= "nilai = $nilai[$key] AND id_kriteria = $value OR ";
         }
     }
 
@@ -40,6 +40,7 @@
         $where = substr($where, 0, -3);
         $sql_id_alternatif = "SELECT id_alternatif FROM tb_evaluasi WHERE id_jenis_kulit = $id_jenis_kulit AND ($where)";
     }
+
     $res_id_alternatif = $pdo->Query($sql_id_alternatif);
     $get_id_alternatif = [];
     while ($row_e = $res_id_alternatif->fetch(PDO::FETCH_OBJ)) {

@@ -33,13 +33,16 @@
                                     <tr>
                                         <th>No.</th>
                                         <th>Nama</th>
+                                        <th>Email</th>
+                                        <th>Telepon</th>
+                                        <th>Jenis Kulit</th>
                                         <th>Tanggal Konsultasi</th>
                                         <th>Aksi</th>
                                     </tr>
                                 </thead>
                                 <tbody align="center">
                                     <?php
-                                    $sql = "SELECT r.id_riwayat, r.tgl AS tgl_konsul, u.id_users, u.nama, u.email, m.tgl_lahir, m.tmp_lahir, m.kelamin, m.telepon, m.alamat FROM tb_riwayat AS r LEFT JOIN tb_member AS m ON m.id_member = r.id_member LEFT JOIN tb_users AS u ON u.id_users = m.id_users WHERE m.id_users = '$_SESSION[id_users]' ORDER BY r.id_riwayat";
+                                    $sql = "SELECT r.id_riwayat, r.tgl AS tgl_konsul, u.id_users, u.nama, u.email, m.tgl_lahir, m.tmp_lahir, m.kelamin, m.telepon, m.alamat, jk.nama AS jenis_kulit FROM tb_riwayat AS r LEFT JOIN tb_member AS m ON m.id_member = r.id_member LEFT JOIN tb_users AS u ON u.id_users = m.id_users LEFT JOIN tb_jenis_kulit AS jk ON jk.id_jenis_kulit = r.id_jenis_kulit WHERE m.id_users = '$_SESSION[id_users]' ORDER BY r.id_riwayat";
                                     $qry = $pdo->Query($sql);
                                     $sum = $qry->rowCount();
                                     $no  = 1;
@@ -48,6 +51,9 @@
                                         <tr>
                                             <td><?= $no++; ?></td>
                                             <td><?= $row->nama ?></td>
+                                            <td><?= $row->email ?></td>
+                                            <td><?= $row->telepon ?></td>
+                                            <td><?= $row->jenis_kulit ?></td>
                                             <td><?= $row->tgl_konsul ?></td>
                                             <td>
                                                 <a href="content/riwayat_cetak.php?id_riwayat=<?= $row->id_riwayat ?>" class="btn btn-info btn-sm btn-action" target="_blank"><i class="fa fa-print"></i>&nbsp;Cetak</a>

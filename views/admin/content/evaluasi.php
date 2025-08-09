@@ -148,6 +148,7 @@
                         <table id="data-table" class="table table-striped table-bordered">
                             <thead align="center">
                                 <tr>
+                                    <th>Aksi</th>
                                     <th>No</th>
                                     <th>Jenis Kulit</th>
                                     <th>Alternatif</th>
@@ -162,6 +163,10 @@
                                 foreach ($evaluasi as $key => $value) { ?>
                                     <?php foreach ($value as $k => $v) { ?>
                                         <tr>
+                                            <td>
+                                                <button class="btn btn-primary btn-sm btn-action" id="upd" data-id_jenis_kulit="<?= $key ?>" data-id_alternatif="<?= $k ?>"><i class="fa fa-edit"></i> Ubah</button>&nbsp;
+                                                <button class="btn btn-danger btn-sm btn-action" id="del" data-id_jenis_kulit="<?= $key ?>" data-id_alternatif="<?= $k ?>"><i class="fa fa-trash"></i> Hapus</button>
+                                            </td>
                                             <td><?= $no++ ?></td>
                                             <td><?= $jenis_kulit[$key] ?></td>
                                             <td><?= $alternatif[$k] ?></td>

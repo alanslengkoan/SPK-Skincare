@@ -1,12 +1,14 @@
 <?php
-$id   = $_GET['id'];
-$qry1 = $pdo->GetWhere('tb_evaluasi', 'id_alternatif', $id);
-$qry2 = $pdo->GetWhere('tb_evaluasi', 'id_alternatif', $id);
+$id_jenis_kulit = $_GET['id_jenis_kulit'];
+$id_alternatif = $_GET['id_alternatif'];
+
+$sql2 = "SELECT * FROM tb_evaluasi WHERE id_jenis_kulit = $id_jenis_kulit AND id_alternatif = $id_alternatif";
+$qry2 = $pdo->Query($sql2);
 
 $result = [];
-$row = $qry1->fetch(PDO::FETCH_OBJ);
-$result['id_jenis_kulit'] = $row->id_jenis_kulit;
-$result['id_alternatif'] = $row->id_alternatif;
+
+$result['id_jenis_kulit'] = $id_jenis_kulit;
+$result['id_alternatif']  = $id_alternatif;
 
 $cow = 0;
 while ($rows = $qry2->fetch(PDO::FETCH_OBJ)) {
