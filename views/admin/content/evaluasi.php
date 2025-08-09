@@ -148,31 +148,31 @@
                         <table id="data-table" class="table table-striped table-bordered">
                             <thead align="center">
                                 <tr>
-                                    <th>Aksi</th>
                                     <th>No</th>
                                     <th>Jenis Kulit</th>
                                     <th>Alternatif</th>
                                     <?php foreach ($kriteria as $key => $value) { ?>
                                         <th><?= $value ?></th>
                                     <?php } ?>
+                                    <th>Aksi</th>
                                 </tr>
                             </thead>
                             <tbody align="center">
                                 <?php
                                 $no = 1;
                                 foreach ($evaluasi as $key => $value) { ?>
-                                    <?php foreach ($value as $k => $v) { ?>
+                                    <?php foreach ($value as $key_2 => $value_2) { ?>
                                         <tr>
-                                            <td>
-                                                <button class="btn btn-primary btn-sm btn-action" id="upd" data-id_jenis_kulit="<?= $key ?>" data-id_alternatif="<?= $k ?>"><i class="fa fa-edit"></i> Ubah</button>&nbsp;
-                                                <button class="btn btn-danger btn-sm btn-action" id="del" data-id_jenis_kulit="<?= $key ?>" data-id_alternatif="<?= $k ?>"><i class="fa fa-trash"></i> Hapus</button>
-                                            </td>
                                             <td><?= $no++ ?></td>
                                             <td><?= $jenis_kulit[$key] ?></td>
-                                            <td><?= $alternatif[$k] ?></td>
-                                            <?php foreach ($v as $k => $v) { ?>
-                                                <td><?= $kriteria_sub[$k][$v] ?></td>
+                                            <td><?= $alternatif[$key_2] ?></td>
+                                            <?php foreach ($value_2 as $key_3 => $value_3) { ?>
+                                                <td><?= $kriteria_sub[$key_3][$value_3] ?></td>
                                             <?php } ?>
+                                            <td>
+                                                <button class="btn btn-primary btn-sm btn-action" id="upd" data-id_jenis_kulit="<?= $key ?>" data-id_alternatif="<?= $key_2 ?>"><i class="fa fa-edit"></i> Ubah</button>&nbsp;
+                                                <button class="btn btn-danger btn-sm btn-action" id="del" data-id_jenis_kulit="<?= $key ?>" data-id_alternatif="<?= $key_2 ?>"><i class="fa fa-trash"></i> Hapus</button>
+                                            </td>
                                         </tr>
                                     <?php } ?>
                                 <?php } ?>
