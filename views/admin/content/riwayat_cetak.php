@@ -27,6 +27,15 @@ $id_riwayat   = $_GET['id_riwayat'];
 $qryLaporan   = $pdo->GetWhere('tb_riwayat', 'id_riwayat', $id_riwayat);
 $rowLaporan   = $qryLaporan->fetch(PDO::FETCH_OBJ);
 $hasil_metode = json_decode($rowLaporan->hasil, true);
+
+$baseUrl  = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? "https" : "http");
+$baseUrl .= "://{$_SERVER['HTTP_HOST']}";
+$baseUrl .= rtrim(dirname($_SERVER['SCRIPT_NAME']), '/');
+
+$path     = parse_url($baseUrl, PHP_URL_PATH);
+$parts    = explode('/', trim($path, '/'));
+$firstTwo = array_slice($parts, 0, 2);
+$base     = parse_url($baseUrl, PHP_URL_SCHEME) . '://' . parse_url($baseUrl, PHP_URL_HOST) . '/' . implode('/', $firstTwo);
 ?>
 
 <!-- CSS -->
@@ -97,7 +106,7 @@ $hasil_metode = json_decode($rowLaporan->hasil, true);
                 <tr>
                     <td><?= $ranking++ ?></td>
                     <td><?= $alternatif[$key]['nama'] ?></td>
-                    <td><img src="http://localhost/skripsi/SPK-Skincare/assets/uploads/alternatif/<?= $alternatif[$key]['gambar'] ?>" width="100" heigth="100" /></td>
+                    <td><img src="<?= $base . '/assets/uploads/alternatif/' . $alternatif[$key]['gambar'] ?>" width="100" height="100" /></td>
                     <td><?= $value ?></td>
                 </tr>
             <?php } ?>

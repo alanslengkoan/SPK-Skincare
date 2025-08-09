@@ -30,7 +30,7 @@
     <!-- begin:: navbar -->
     <nav class="navbar navbar-expand-lg navbar-light bg-light fixed-top">
         <div class="container">
-            <a class="navbar-brand" href="#">Metode Smart</a>
+            <a class="navbar-brand" href="#">Rarif Store</a>
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
@@ -55,15 +55,7 @@
     <!-- end:: navbar -->
 
     <!-- begin:: header -->
-    <header class="intro-header">
-        <div class="container">
-            <div class="intro-message">
-                <h1>Metode Smart</h1>
-                <h3>Sistem Pendukung Keputusan</h3>
-                <hr class="intro-divider">
-            </div>
-        </div>
-    </header>
+    <header class="intro-header"></header>
     <!-- end:: header -->
 
     <!-- begin:: content -->
@@ -71,13 +63,23 @@
         <div class="container">
             <h2 class="text-center">Tentang</h2>
             <hr class="intro-divider">
-            <p class="text-justify">
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed euismod, nisl ut aliquam aliquam, nunc nisl aliquet nunc,
-                eget aliquam nisl nisl sit amet nunc. Sed euismod, nisl ut aliquam aliquam, nunc nisl aliquet nunc, eget aliquam nisl
-                nisl sit amet nunc. Sed euismod, nisl ut aliquam aliquam, nunc nisl aliquet nunc, eget aliquam nisl nisl sit amet nunc.
-                Sed euismod, nisl ut aliquam aliquam, nunc nisl aliquet nunc, eget aliquam nisl nisl sit amet nunc. Sed euismod, nisl
-            </p>
-        </div>
+            <div class="row align-items-center">
+                <div class="col-md-6 mb-4 mb-md-0">
+                    <img src="./../assets/page/img/logo.jpg" alt="Tentang Kami" class="img-fluid rounded shadow">
+                </div>
+                <div class="col-md-6 text-justify">
+                    <p>
+                        Kami adalah perusahaan yang berfokus pada solusi perawatan kulit yang aman, alami, dan efektif.
+                        Dengan tim ahli yang berdedikasi, kami berkomitmen untuk memberikan produk berkualitas tinggi
+                        yang dirancang khusus untuk memenuhi kebutuhan kulit Anda.
+                    </p>
+                    <p>
+                        Visi kami adalah menjadi pilihan utama dalam perawatan kulit dengan mengedepankan inovasi,
+                        kualitas, dan kepuasan pelanggan. Kami percaya bahwa setiap orang berhak mendapatkan perawatan terbaik
+                        untuk kulit mereka.
+                    </p>
+                </div>
+            </div>
     </section>
     <!-- end:: content -->
 

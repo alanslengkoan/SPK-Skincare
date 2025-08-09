@@ -1,105 +1,126 @@
 <?php
-$nma = strip_tags($_POST['nama']);
-$deskripsi = strip_tags($_POST['deskripsi']);
-
-$error = [];
-foreach ($_POST as $key => $value) {
-    if ($value == '') {
-        $error[$key] = 'Kolom ini harus diisi.';
-    }
-    if (is_array($value)) {
-        for ($c = 0; $c < count($value); $c++) {
-            $check_value_arr = trim($value[$c]);
-            if (empty($check_value_arr)) {
-                $error[] = $c;
-            }
-        }
-    }
+function jsonResponse($title, $text, $type, $button = 'Ok!', $extra = [])
+{
+    echo json_encode(array_merge([
+        'title' => $title,
+        'text'  => $text,
+        'type'  => $type,
+        'button' => $button
+    ], $extra), JSON_UNESCAPED_UNICODE);
+    exit;
 }
 
-foreach ($_FILES as $key => $value) {
-    if ($value['name'] == '') {
-        $error[$key] = 'Kolom ini harus diisi.';
-    }
+function sanitizeInput($key)
+{
+    return trim(strip_tags(filter_input(INPUT_POST, $key, FILTER_SANITIZE_STRING)));
 }
 
-if (count($error) != 0) {
-    exit(json_encode(array('title' => 'Gagal!', 'text' => 'Data gagal ditambahkan!', 'type' => 'error', 'button' => 'Ok!', 'errors' => $error)));
-} else {
-    if (empty($_POST['id_jenis_kulit'])) {
-        // untuk format foto
-        $formatGambar = array('jpeg', 'jpg', 'png');
-        // untuk ukuran foto
-        $ukuranGambar = 10 * 1024 * 1024;
-        // untuk nama gambar
-        $nmaGambar = $_FILES['inpgambar']['name'];
-        $tmpGambar = $_FILES['inpgambar']['tmp_name'];
-        $szeGambar = $_FILES['inpgambar']['size'];
-        $errGambar = $_FILES['inpgambar']['error'];
-
-        if ($errGambar == 0) {
-            if ($szeGambar > $ukuranGambar) {
-                exit(json_encode(array('title' => 'Peringatan!', 'text' => 'Ukuran Gambar terlalu besar!', 'type' => 'warning', 'button' => 'Ok!')));
-            } else if (!in_array(pathinfo($nmaGambar, PATHINFO_EXTENSION), $formatGambar)) {
-                exit(json_encode(array('title' => 'Peringatan!', 'text' => 'Format Gambar tidak didukung!', 'type' => 'warning', 'button' => 'Ok!')));
-            } else if (file_exists("../../../assets/uploads/jenis_kulit/" . $nmaGambar)) {
-                exit(json_encode(array('title' => 'Peringatan!', 'text' => 'Nama Gambar sudah ada silahkan diganti!', 'type' => 'warning', 'button' => 'Ok!')));
-            } else {
-                $insert = $pdo->Insert("tb_jenis_kulit", ["nama", "deskripsi", "gambar"], [$nma, $deskripsi, $nmaGambar]);
-                if ($insert == 1) {
-                    move_uploaded_file($tmpGambar, "../../../assets/uploads/jenis_kulit/" . basename($nmaGambar));
-                    exit(json_encode(array('title' => 'Berhasil!', 'text' => 'Data ditambah!', 'type' => 'success', 'button' => 'Ok!')));
-                } else {
-                    exit(json_encode(array('title' => 'Gagal!', 'text' => 'Data gagal ditambahkan!', 'type' => 'error', 'button' => 'Ok!')));
+function validateRequiredFields($post, $files)
+{
+    $error = [];
+    foreach ($post as $key => $value) {
+        if (is_array($value)) {
+            foreach ($value as $c => $v) {
+                if (trim($v) === '') {
+                    $error["{$key}_{$c}"] = 'Kolom ini harus diisi.';
                 }
             }
+        } elseif (trim($value) === '') {
+            $error[$key] = 'Kolom ini harus diisi.';
+        }
+    }
+
+    foreach ($files as $key => $value) {
+        if (empty($value['name'])) {
+            $error[$key] = 'Kolom ini harus diisi.';
+        }
+    }
+    return $error;
+}
+
+function uploadImage($fileKey, $targetDir)
+{
+    $formatGambar = ['jpeg', 'jpg', 'png'];
+    $ukuranGambar = 10 * 1024 * 1024;
+
+    if (!isset($_FILES[$fileKey])) {
+        return [false, 'File tidak ditemukan.'];
+    }
+
+    $file = $_FILES[$fileKey];
+    $ext  = strtolower(pathinfo($file['name'], PATHINFO_EXTENSION));
+
+    if ($file['error'] !== UPLOAD_ERR_OK) {
+        return [false, 'Terjadi kesalahan saat upload gambar.'];
+    }
+    if ($file['size'] > $ukuranGambar) {
+        return [false, 'Ukuran gambar terlalu besar!'];
+    }
+    if (!in_array($ext, $formatGambar)) {
+        return [false, 'Ekstensi gambar tidak diperbolehkan!'];
+    }
+
+    $namaBaru = 'gambar_' . date('Ymd_His') . '_' . substr(md5(uniqid()), 0, 6) . '.' . $ext;
+    $path = rtrim($targetDir, '/') . '/' . $namaBaru;
+
+    if (!move_uploaded_file($file['tmp_name'], $path)) {
+        return [false, 'Gagal memindahkan file.'];
+    }
+    return [true, $namaBaru];
+}
+
+// =================== MAIN LOGIC ===================
+
+$nma       = sanitizeInput('nama');
+$deskripsi = sanitizeInput('deskripsi');
+$error     = validateRequiredFields($_POST, $_FILES);
+
+$baseDirUpload = "../../../assets/uploads/jenis_kulit";
+
+if (!empty($error)) {
+    jsonResponse('Gagal!', 'Data gagal ditambahkan!', 'error', 'Ok!', ['errors' => $error]);
+}
+
+if (empty($_POST['id_jenis_kulit'])) {
+    list($success, $result) = uploadImage('inpgambar', $baseDirUpload);
+    if (!$success) {
+        jsonResponse('Peringatan!', $result, 'warning');
+    }
+
+    $insert = $pdo->Insert("tb_jenis_kulit", ["nama", "deskripsi", "gambar"], [$nma, $deskripsi, $result]);
+    if ($insert) {
+        jsonResponse('Berhasil!', 'Data ditambah.', 'success');
+    } else {
+        jsonResponse('Gagal!', 'Data gagal ditambah.', 'error');
+    }
+} else {
+    $ida = sanitizeInput('id_jenis_kulit');
+
+    if (isset($_POST['ubah_gambar'])) {
+        $query = $pdo->GetWhere('tb_jenis_kulit', 'id_jenis_kulit', $ida);
+        $row   = $query->fetch(PDO::FETCH_OBJ);
+        $oldFile = $row->gambar ?? '';
+
+        list($success, $result) = uploadImage('inpgambar', $baseDirUpload);
+        if (!$success) {
+            jsonResponse('Peringatan!', $result, 'warning');
+        }
+
+        $update = $pdo->Update("tb_jenis_kulit", "id_jenis_kulit", $ida, ["nama", "deskripsi", "gambar"], [$nma, $deskripsi, $result]);
+        if ($update) {
+            if (!empty($oldFile) && file_exists($baseDirUpload . '/' . $oldFile)) {
+                unlink($baseDirUpload . '/' . $oldFile);
+            }
+            jsonResponse('Berhasil!', 'Data diubah.', 'success');
         } else {
-            exit(json_encode(array('title' => 'Gagal!', 'text' => 'Terjadi kesalahan pada gambar!', 'type' => 'error', 'button' => 'Ok!')));
+            jsonResponse('Gagal!', 'Data tidak diubah.', 'error');
         }
     } else {
-        $ida = strip_tags($_POST['id_jenis_kulit']);
-
-        if (isset($_POST['ubah_gambar'])) {
-            $query  = $pdo->GetWhere('tb_jenis_kulit', 'id_jenis_kulit', $ida);
-            $row    = $query->fetch(PDO::FETCH_OBJ);
-            $nmaGambarDb = $row->gambar;
-
-            // untuk format foto
-            $formatGambar = array('jpeg', 'jpg', 'png');
-            // untuk ukuran foto
-            $ukuranGambar = 10 * 1024 * 1024;
-            // untuk nama gambar
-            $nmaGambar = $_FILES['inpgambar']['name'];
-            $tmpGambar = $_FILES['inpgambar']['tmp_name'];
-            $szeGambar = $_FILES['inpgambar']['size'];
-            $errGambar = $_FILES['inpgambar']['error'];
-
-            if ($errGambar == 0) {
-                if ($szeGambar > $ukuranGambar) {
-                    exit(json_encode(array('title' => 'Peringatan!', 'text' => 'Ukuran Gambar terlalu besar!', 'type' => 'warning', 'button' => 'Ok!')));
-                } else if (!in_array(pathinfo($nmaGambar, PATHINFO_EXTENSION), $formatGambar)) {
-                    exit(json_encode(array('title' => 'Peringatan!', 'text' => 'Format Gambar tidak didukung!', 'type' => 'warning', 'button' => 'Ok!')));
-                } else if (file_exists("../../../assets/uploads/jenis_kulit/" . $nmaGambar)) {
-                    exit(json_encode(array('title' => 'Peringatan!', 'text' => 'Nama Gambar sudah ada silahkan diganti!', 'type' => 'warning', 'button' => 'Ok!')));
-                } else {
-                    $upd = $pdo->Update("tb_jenis_kulit", 'id_jenis_kulit', $ida, ["nama", "deskripsi", "gambar"], [$nma, $deskripsi, $nmaGambar]);
-                    if ($upd == 1) {
-                        move_uploaded_file($tmpGambar, "../../../assets/uploads/jenis_kulit/" . basename($nmaGambar));
-                        exit(json_encode(array('title' => 'Berhasil!', 'text' => 'Data diubah.', 'type' => 'success', 'button' => 'Ok!')));
-                    } else {
-                        exit(json_encode(array('title' => 'Gagal!', 'text' => 'Data tidak diubah.', 'type' => 'error', 'button' => 'Ok!')));
-                    }
-                }
-            } else {
-                exit(json_encode(array('title' => 'Gagal!', 'text' => 'Terjadi kesalahan pada gambar!', 'type' => 'error', 'button' => 'Ok!')));
-            }
+        $upd = $pdo->Update("tb_jenis_kulit", 'id_jenis_kulit', $ida, ["nama", "deskripsi"], [$nma, $deskripsi]);
+        if ($upd) {
+            jsonResponse('Berhasil!', 'Data diubah.', 'success');
         } else {
-            $upd = $pdo->Update("tb_jenis_kulit", 'id_jenis_kulit', $ida, ["nama", "deskripsi"], [$nma, $deskripsi]);
-            if ($upd == 1) {
-                exit(json_encode(array('title' => 'Berhasil!', 'text' => 'Data diubah.', 'type' => 'success', 'button' => 'Ok!')));
-            } else {
-                exit(json_encode(array('title' => 'Gagal!', 'text' => 'Data tidak diubah.', 'type' => 'error', 'button' => 'Ok!')));
-            }
+            jsonResponse('Gagal!', 'Data tidak diubah.', 'error');
         }
     }
 }
