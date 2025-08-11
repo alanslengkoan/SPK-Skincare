@@ -26,19 +26,10 @@
     }
 
     // filter
-    $where = "";
-    foreach ($id_kriteria as $key => $value) {
-        if ($nilai[$key] != "") {
-            $where .= "nilai = $nilai[$key] AND id_kriteria = $value OR ";
-        }
-    }
-
-    // ambil alternatif
-    if ($where == "") {
+    if ($id_kriteria == "" && $nilai == "") {
         $sql_id_alternatif = "SELECT id_alternatif FROM tb_evaluasi WHERE id_jenis_kulit = $id_jenis_kulit";
     } else {
-        $where = substr($where, 0, -3);
-        $sql_id_alternatif = "SELECT id_alternatif FROM tb_evaluasi WHERE id_jenis_kulit = $id_jenis_kulit AND ($where)";
+        $sql_id_alternatif = "SELECT id_alternatif FROM tb_evaluasi WHERE id_jenis_kulit = $id_jenis_kulit AND (id_kriteria = $id_kriteria AND nilai = $nilai)";
     }
 
     $res_id_alternatif = $pdo->Query($sql_id_alternatif);
@@ -100,176 +91,183 @@
        <div class="animated fadeIn">
            <div class="row">
                <div class="col-lg-12">
-                   <div class="card">
-                       <div class="card-header">
-                           <h5>Normalisasi Bobot Kriteria</h5>
-                       </div>
-                       <div class="card-body">
-                           <table class="table table-striped table-bordered table-hover">
-                               <thead align="center">
-                                   <tr>
-                                       <th>Kriteria</th>
-                                       <th>Bobot Kriteria</th>
-                                       <th>Normalisasi Bobot Kriteria</th>
-                                   </tr>
-                               </thead>
-                               <tbody align="center">
-                                   <?php
-                                    $bobot = array();
-                                    foreach ($kriteria as $k => $vk) {
-                                        $bobot[$k] = $vk['bobot'];
-                                    }
-                                    $jml_bobot = array_sum($bobot);
-                                    $w = array();
-                                    foreach ($bobot as $k => $b) {
-                                        $w[$k] = $b / $jml_bobot;
-                                    }
-                                    ?>
-
-                                   <?php foreach ($nma_kriteria as $key => $value) { ?>
+                   <button class="btn btn-primary mb-3" type="button" data-bs-toggle="collapse" data-bs-target="#produkCard" aria-expanded="false" aria-controls="produkCard">
+                       Tampilkan Proses Perhitungan
+                   </button>
+                   
+                   <div class="collapse" id="produkCard">
+                       <div class="card">
+                           <div class="card-header">
+                               <h5>Normalisasi Bobot Kriteria</h5>
+                           </div>
+                           <div class="card-body">
+                               <table class="table table-striped table-bordered table-hover">
+                                   <thead align="center">
                                        <tr>
-                                           <td><?= $value ?></td>
-                                           <td><?= $bobot[$key] ?></td>
-                                           <td><?= round($w[$key], 4) ?></td>
+                                           <th>Kriteria</th>
+                                           <th>Bobot Kriteria</th>
+                                           <th>Normalisasi Bobot Kriteria</th>
                                        </tr>
-                                   <?php } ?>
-                               </tbody>
-                           </table>
-                       </div>
-                   </div>
+                                   </thead>
+                                   <tbody align="center">
+                                       <?php
+                                        $bobot = array();
+                                        foreach ($kriteria as $k => $vk) {
+                                            $bobot[$k] = $vk['bobot'];
+                                        }
+                                        $jml_bobot = array_sum($bobot);
+                                        $w = array();
+                                        foreach ($bobot as $k => $b) {
+                                            $w[$k] = $b / $jml_bobot;
+                                        }
+                                        ?>
 
-                   <div class="card">
-                       <div class="card-header">
-                           <h5>Inisialisasi Bobot</h5>
-                       </div>
-                       <div class="card-body">
-                           <table class="table table-striped table-bordered table-hover">
-                               <thead align="center">
-                                   <tr>
-                                       <th>Alternatif</th>
                                        <?php foreach ($nma_kriteria as $key => $value) { ?>
-                                           <th><?= $value ?></th>
+                                           <tr>
+                                               <td><?= $value ?></td>
+                                               <td><?= $bobot[$key] ?></td>
+                                               <td><?= round($w[$key], 4) ?></td>
+                                           </tr>
                                        <?php } ?>
-                                   </tr>
-                               </thead>
-                               <tbody align="center">
-                                   <?php foreach ($nma_alternatif as $key => $value) { ?>
+                                   </tbody>
+                               </table>
+                           </div>
+                       </div>
+
+                       <div class="card">
+                           <div class="card-header">
+                               <h5>Inisialisasi Bobot</h5>
+                           </div>
+                           <div class="card-body">
+                               <table class="table table-striped table-bordered table-hover">
+                                   <thead align="center">
                                        <tr>
-                                           <td><?= $value['alternatif'] ?></td>
-                                           <?php foreach ($kriteria as $k => $v) { ?>
-                                               <td><?= $sample[$key][$k] ?></td>
+                                           <th>Alternatif</th>
+                                           <?php foreach ($nma_kriteria as $key => $value) { ?>
+                                               <th><?= $value ?></th>
                                            <?php } ?>
                                        </tr>
-                                   <?php } ?>
-                               </tbody>
-                           </table>
-                       </div>
-                   </div>
-
-                   <?php
-                    //-- inisialisasi variabel array tranpose_d untuk menyimpan data tranpose dari data sample
-                    $tranpose_d = array();
-                    foreach ($alternatif as $a => $v) {
-                        foreach ($kriteria as $k => $v_k) {
-                            if (!isset($tranpose_d[$k])) $tranpose_d[$k] = array();
-                            $tranpose_d[$k][$a] = $sample[$a][$k];
-                        }
-                    }
-                    //-- inisialisasi variabel array c_max dan c_min
-                    $c_max = array();
-                    $c_min = array();
-                    //-- mencari nilai max dan min utk tiap-tiap kriteria
-                    foreach ($kriteria as $k => $v) {
-                        $c_max[$k] = max($tranpose_d[$k]);
-                        $c_min[$k] = min($tranpose_d[$k]);
-                    }
-                    ?>
-
-                   <div class="card">
-                       <div class="card-header">
-                           <h5>Min dan Max</h5>
-                       </div>
-                       <div class="card-body">
-                           <table class="table table-striped table-bordered table-hover">
-                               <thead align="center">
-                                   <tr>
-                                       <th>Tipe</th>
-                                       <?php foreach ($kriteria as $key => $value) { ?>
-                                           <th><?= $value['nama'] ?></th>
+                                   </thead>
+                                   <tbody align="center">
+                                       <?php foreach ($nma_alternatif as $key => $value) { ?>
+                                           <tr>
+                                               <td><?= $value['alternatif'] ?></td>
+                                               <?php foreach ($kriteria as $k => $v) { ?>
+                                                   <td><?= $sample[$key][$k] ?></td>
+                                               <?php } ?>
+                                           </tr>
                                        <?php } ?>
-                                   </tr>
-                                   <tr>
-                                       <td>Min</td>
-                                       <?php foreach ($kriteria as $key => $value) { ?>
-                                           <td><?= $c_min[$key] ?></td>
-                                       <?php } ?>
-                                   </tr>
-                                   <tr>
-                                       <td>Max</td>
-                                       <?php foreach ($kriteria as $key => $value) { ?>
-                                           <td><?= $c_max[$key] ?></td>
-                                       <?php } ?>
-                                   </tr>
-                               </thead>
-                           </table>
+                                   </tbody>
+                               </table>
+                           </div>
                        </div>
-                   </div>
 
-                   <?php
-                    //-- inisialisasi variabel array U
-                    $U = array();
-                    //-- menghitung nilai utility utk masing-masing alternatif dan kriteria
-                    foreach ($kriteria as $k => $v) {
-                        foreach ($alternatif as $a => $a_v) {
-                            if (!isset($U[$a])) $U[$a] = array();
-                            if ($kriteria[$k]['tipe'] == 'benefit') {
-                                //-- perhitungan nilai utility untuk benefit criteria
-                                $U[$a][$k] = ($sample[$a][$k] - $c_min[$k]) == 0 ? 0 : ($sample[$a][$k] - $c_min[$k]) / ($c_max[$k] - $c_min[$k]);
-                                $nma_alternatif[$a][$k] = ($sample[$a][$k] - $c_min[$k]) == 0 ? 0 : ($sample[$a][$k] - $c_min[$k]) / ($c_max[$k] - $c_min[$k]);
-                            } else {
-                                //-- perhitungan nilai utility untuk cost criteria
-                                $U[$a][$k] = ($c_max[$k] - $sample[$a][$k]) == 0 ? 0 : ($c_max[$k] - $sample[$a][$k]) / ($c_max[$k] - $c_min[$k]);
-                                $nma_alternatif[$a][$k] = ($c_max[$k] - $sample[$a][$k]) == 0 ? 0 : ($c_max[$k] - $sample[$a][$k]) / ($c_max[$k] - $c_min[$k]);
+                       <?php
+                        //-- inisialisasi variabel array tranpose_d untuk menyimpan data tranpose dari data sample
+                        $tranpose_d = array();
+                        foreach ($alternatif as $a => $v) {
+                            foreach ($kriteria as $k => $v_k) {
+                                if (!isset($tranpose_d[$k])) $tranpose_d[$k] = array();
+                                $tranpose_d[$k][$a] = $sample[$a][$k];
                             }
                         }
-                    }
-                    ?>
-                   <div class="card">
-                       <div class="card-header">
-                           <h5>Menghitung Nilai Utility</h5>
-                       </div>
-                       <div class="card-body">
-                           <table class="table table-striped table-bordered table-hover">
-                               <thead align="center">
-                                   <tr>
-                                       <th>Alternatif</th>
-                                       <?php foreach ($nma_kriteria as $key => $value) { ?>
-                                           <th><?= $value ?></th>
-                                       <?php } ?>
-                                   </tr>
-                               </thead>
-                               <tbody align="center">
-                                   <?php foreach ($nma_alternatif as $key => $value) { ?>
+                        //-- inisialisasi variabel array c_max dan c_min
+                        $c_max = array();
+                        $c_min = array();
+                        //-- mencari nilai max dan min utk tiap-tiap kriteria
+                        foreach ($kriteria as $k => $v) {
+                            $c_max[$k] = max($tranpose_d[$k]);
+                            $c_min[$k] = min($tranpose_d[$k]);
+                        }
+                        ?>
+
+                       <div class="card">
+                           <div class="card-header">
+                               <h5>Min dan Max</h5>
+                           </div>
+                           <div class="card-body">
+                               <table class="table table-striped table-bordered table-hover">
+                                   <thead align="center">
                                        <tr>
-                                           <td><?= $value['alternatif'] ?></td>
-                                           <?php for ($i = 1; $i <= $jumlah_kriteria; $i++) { ?>
-                                               <td><?= round($value[$i]) ?></td>
+                                           <th>Tipe</th>
+                                           <?php foreach ($kriteria as $key => $value) { ?>
+                                               <th><?= $value['nama'] ?></th>
                                            <?php } ?>
                                        </tr>
-                                   <?php } ?>
-                               </tbody>
-                           </table>
+                                       <tr>
+                                           <td>Min</td>
+                                           <?php foreach ($kriteria as $key => $value) { ?>
+                                               <td><?= $c_min[$key] ?></td>
+                                           <?php } ?>
+                                       </tr>
+                                       <tr>
+                                           <td>Max</td>
+                                           <?php foreach ($kriteria as $key => $value) { ?>
+                                               <td><?= $c_max[$key] ?></td>
+                                           <?php } ?>
+                                       </tr>
+                                   </thead>
+                               </table>
+                           </div>
                        </div>
-                   </div>
-                   <?php
-                    $perangkingan = array();
-                    foreach ($U as $a => $a_u) {
-                        $perangkingan[$a] = 0;
-                        foreach ($a_u as $k => $u) {
-                            $perangkingan[$a] += $u * $w[$k];
+
+                       <?php
+                        //-- inisialisasi variabel array U
+                        $U = array();
+                        //-- menghitung nilai utility utk masing-masing alternatif dan kriteria
+                        foreach ($kriteria as $k => $v) {
+                            foreach ($alternatif as $a => $a_v) {
+                                if (!isset($U[$a])) $U[$a] = array();
+                                if ($kriteria[$k]['tipe'] == 'benefit') {
+                                    //-- perhitungan nilai utility untuk benefit criteria
+                                    $U[$a][$k] = ($sample[$a][$k] - $c_min[$k]) == 0 ? 0 : ($sample[$a][$k] - $c_min[$k]) / ($c_max[$k] - $c_min[$k]);
+                                    $nma_alternatif[$a][$k] = ($sample[$a][$k] - $c_min[$k]) == 0 ? 0 : ($sample[$a][$k] - $c_min[$k]) / ($c_max[$k] - $c_min[$k]);
+                                } else {
+                                    //-- perhitungan nilai utility untuk cost criteria
+                                    $U[$a][$k] = ($c_max[$k] - $sample[$a][$k]) == 0 ? 0 : ($c_max[$k] - $sample[$a][$k]) / ($c_max[$k] - $c_min[$k]);
+                                    $nma_alternatif[$a][$k] = ($c_max[$k] - $sample[$a][$k]) == 0 ? 0 : ($c_max[$k] - $sample[$a][$k]) / ($c_max[$k] - $c_min[$k]);
+                                }
+                            }
                         }
-                    }
-                    ?>
+                        ?>
+                       <div class="card">
+                           <div class="card-header">
+                               <h5>Menghitung Nilai Utility</h5>
+                           </div>
+                           <div class="card-body">
+                               <table class="table table-striped table-bordered table-hover">
+                                   <thead align="center">
+                                       <tr>
+                                           <th>Alternatif</th>
+                                           <?php foreach ($nma_kriteria as $key => $value) { ?>
+                                               <th><?= $value ?></th>
+                                           <?php } ?>
+                                       </tr>
+                                   </thead>
+                                   <tbody align="center">
+                                       <?php foreach ($nma_alternatif as $key => $value) { ?>
+                                           <tr>
+                                               <td><?= $value['alternatif'] ?></td>
+                                               <?php for ($i = 1; $i <= $jumlah_kriteria; $i++) { ?>
+                                                   <td><?= round($value[$i]) ?></td>
+                                               <?php } ?>
+                                           </tr>
+                                       <?php } ?>
+                                   </tbody>
+                               </table>
+                           </div>
+                       </div>
+                       <?php
+                        $perangkingan = array();
+                        foreach ($U as $a => $a_u) {
+                            $perangkingan[$a] = 0;
+                            foreach ($a_u as $k => $u) {
+                                $perangkingan[$a] += $u * $w[$k];
+                            }
+                        }
+                        ?>
+                   </div>
+
                    <div class="card">
                        <div class="card-header">
                            <h5>Hasil</h5>

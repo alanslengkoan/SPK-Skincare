@@ -64,7 +64,10 @@
             <h2 class="text-center">Home</h2>
             <hr class="intro-divider">
             <p class="text-justify">
-                Sistem Pendukung Keputusan Penentuan Skincare Yang Sesuai Lisensi BPOM Pada Online Shop Menggunakan Metode SMART dibuat karena banyaknya produk skincare yang beredar belum tentu aman dan sesuai dengan kebutuhan kulit konsumen. Tidak sedikit masyarakat yang masih kesulitan memilih produk berdasarkan informasi yang valid seperti izin BPOM dan kesesuaian jenis kulit. Oleh karena itu, sistem pendukung keputusan ini dirancang untuk membantu memberikan rekomendasi produk skincare yang aman dan sesuai dengan jenis kulit, dengan menggunakan metode SMART sebagai dasar pengambilan keputusan yang objektif dan terukur.
+                Mulailah perjalanan perawatan kulit Anda dengan produk skincare yang aman dan sesuai kebutuhan. Pilih dari berbagai rekomendasi yang telah terdaftar resmi di BPOM, sehingga Anda bisa merasa tenang saat menggunakannya.
+            </p>
+            <p class="text-justify">
+                Dapatkan kulit yang sehat, segar, dan mempesona. karena setiap orang berhak tampil percaya diri dengan kulit terbaiknya.
             </p>
         </div>
     </section>

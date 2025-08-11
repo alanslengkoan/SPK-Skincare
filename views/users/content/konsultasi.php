@@ -44,28 +44,31 @@
                                      </select>
                                  </div>
                              </div>
-                             <?php
-                                $query1 = $pdo->GetAll('tb_kriteria', 'id_kriteria');
-                                $row = 0;
-                                while ($row_k = $query1->fetch(PDO::FETCH_OBJ)) { ?>
-                                 <div class="row form-group">
-                                     <div class="col col-md-3">
-                                         <label for="bobot" class=" form-control-label"><?= $row_k->nama ?></label>
-                                     </div>
-                                     <div class="col-12 col-md-9">
-                                         <input type="hidden" name="id_kriteria[]" value="<?= $row_k->id_kriteria ?>" />
-                                         <select name="nilai[]" id="nilai_<?= $row++ ?>" class="form-control form-control-sm">
-                                             <option value="">- Pilih -</option>
-                                             <?php
-                                                $query2 = $pdo->GetWhere('tb_kriteria_sub', 'id_kriteria', $row_k->id_kriteria);
-                                                while ($row_s = $query2->fetch(PDO::FETCH_OBJ)) { ?>
-                                                 <option value="<?= $row_s->nilai ?>"><?= $row_s->nama ?></option>
-                                             <?php } ?>
-                                         </select>
-                                         <small class="help-block form-text error"></small>
-                                     </div>
+                             <div class="row form-group">
+                                 <div class="col col-md-3">
+                                     <label for="id_kriteria" class=" form-control-label">Pilih Kriteria</label>
                                  </div>
-                             <?php } ?>
+                                 <div class="col-12 col-md-9">
+                                     <select name="id_kriteria" id="id_kriteria" class="form-control form-control-sm">
+                                         <option value="">- Pilih -</option>
+                                         <?php
+                                            $query = $pdo->GetAll('tb_kriteria', 'id_kriteria');
+                                            while ($row = $query->fetch(PDO::FETCH_OBJ)) { ?>
+                                             <option value="<?= $row->id_kriteria ?>"><?= $row->nama ?></option>
+                                         <?php } ?>
+                                     </select>
+                                 </div>
+                             </div>
+                             <div class="row form-group">
+                                 <div class="col col-md-3">
+                                     <label for="nilai" class=" form-control-label">Pilih Sub Kriteria</label>
+                                 </div>
+                                 <div class="col-12 col-md-9">
+                                     <select name="nilai" id="nilai" class="form-control form-control-sm">
+                                         <option value="">- Pilih -</option>
+                                     </select>
+                                 </div>
+                             </div>
                          </div>
                          <div class="card-footer">
                              <button type="submit" name="add" id="add" class="btn btn-success btn-sm">

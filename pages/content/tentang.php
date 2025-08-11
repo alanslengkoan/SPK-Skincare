@@ -59,11 +59,12 @@
     <!-- end:: header -->
 
     <!-- begin:: content -->
-    <section class="content">
+    <section class="content py-5">
         <div class="container">
-            <h2 class="text-center">Tentang</h2>
-            <hr class="intro-divider">
-            <div class="row align-items-center">
+            <h2 class="text-center mb-4">Tentang</h2>
+            <hr class="intro-divider mb-5">
+
+            <div class="row align-items-center mb-5">
                 <div class="col-md-6 mb-4 mb-md-0">
                     <img src="./../assets/page/img/logo.jpg" alt="Tentang Kami" class="img-fluid rounded shadow">
                 </div>
@@ -80,6 +81,33 @@
                     </p>
                 </div>
             </div>
+
+            <!-- Bagian Alamat dan Peta -->
+            <div class="row mt-4">
+                <div class="col-md-6">
+                    <h4>Alamat Kami</h4>
+                    <p>
+                        Jl. H. M Yasin Limpo No.6, Romangpolong<br>
+                        Kec. Somba Opu, Kabupaten Gowa, Sulawesi Selatan 92113<br>
+                        Indonesia
+                    </p>
+                    <p>
+                        <strong>Telepon:</strong> +62 812-3456-7890<br>
+                        <strong>Email:</strong> info@perusahaan.com
+                    </p>
+                </div>
+                <div class="col-md-6">
+                    <h4>Lokasi Kami</h4>
+                    <div class="ratio ratio-16x9">
+                        <iframe
+                            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d4806.3458725808!2d119.4933883!3d-5.2022071!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2dbee30004c57ec7%3A0xdda2e0029cfd58c4!2sRarif%20store!5e1!3m2!1sid!2sid!4v1754918267200!5m2!1sid!2sid"
+                            width="600" height="450" style="border:0;"
+                            allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade">
+                        </iframe>
+                    </div>
+                </div>
+            </div>
+        </div>
     </section>
     <!-- end:: content -->
 
