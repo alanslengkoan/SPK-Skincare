@@ -27,12 +27,6 @@
                         Jenis Kulit
                     </a>
                 </li>
-                <li class="<?= ($_REQUEST['content'] == "penilaian") ? 'active' : '' ?>">
-                    <a href="penilaian">
-                        <i class="menu-icon fa fa-list"></i>
-                        Penilaian
-                    </a>
-                </li>
                 <h3 class="menu-title">Pustaka</h3>
                 <li class="<?= ($_REQUEST['content'] == "konsultasi") ? 'active' : '' ?>">
                     <a href="konsultasi">

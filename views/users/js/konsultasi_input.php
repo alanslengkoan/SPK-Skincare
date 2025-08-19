@@ -12,12 +12,20 @@
     <script src="./../../assets/admin/js/sweetalert.min.js"></script>
 
     <script>
-        let forProvinsi = function() {
-            $(document).on('change', '#id_kriteria', function(e) {
-                e.preventDefault();
-                getSubKriteria($(this).val());
-            });
-        }();
+        $(document).on('change', 'input[name="model_kriteria"]', function() {
+            if ($(this).val() === 'spesifik') {
+                $('#content_spesifik').show();
+                $('#content_semua').hide();
+            } else if ($(this).val() === 'semua') {
+                $('#content_semua').show();
+                $('#content_spesifik').hide();
+            }
+        });
+
+        $(document).on('change', '#id_kriteria_spesifik', function(e) {
+            e.preventDefault();
+            getSubKriteria($(this).val());
+        });
 
         function getSubKriteria(id_kriteria) {
             $.ajax({
@@ -28,14 +36,14 @@
                 },
                 dataType: 'json',
                 beforeSend: function() {
-                    $('#nilai').empty();
-                    $('#nilai').append('<option value="">Loading...</option>');
+                    $('#nilai_spesifik').empty();
+                    $('#nilai_spesifik').append('<option value="">Loading...</option>');
                 },
                 success: function(response) {
-                    $('#nilai').empty();
-                    $('#nilai').append('<option value="">- Pilih -</option>');
+                    $('#nilai_spesifik').empty();
+                    $('#nilai_spesifik').append('<option value="">- Pilih -</option>');
                     for (let i = 0; i < response.length; i++) {
-                        $('#nilai').append(new Option(response[i].nama, response[i].nilai));
+                        $('#nilai_spesifik').append(new Option(response[i].nama, response[i].nilai));
                     }
                 }
             });

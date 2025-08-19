@@ -1,7 +1,5 @@
    <?php
     $id_jenis_kulit = $_POST['id_jenis_kulit'];
-    $id_kriteria = $_POST['id_kriteria'];
-    $nilai = $_POST['nilai'];
 
     // untuk jenis kulit
     $sql_jenis_kulit = "SELECT id_jenis_kulit, nama FROM tb_jenis_kulit";
@@ -26,10 +24,32 @@
     }
 
     // filter
-    if ($id_kriteria == "" && $nilai == "") {
-        $sql_id_alternatif = "SELECT id_alternatif FROM tb_evaluasi WHERE id_jenis_kulit = $id_jenis_kulit";
+    if (isset($_POST['model_kriteria'])) {
+       
+        $model_kriteria = $_POST['model_kriteria'];
+
+        if ($model_kriteria === 'spesifik') {
+            $id_kriteria_spesifik = $_POST['id_kriteria_spesifik'];
+            $nilai_spesifik = $_POST['nilai_spesifik'];
+            
+            $sql_id_alternatif = "SELECT id_alternatif FROM tb_evaluasi WHERE id_jenis_kulit = $id_jenis_kulit AND (id_kriteria = $id_kriteria_spesifik AND nilai = $nilai_spesifik)";
+        } else {
+            $id_kriteria = $_POST['id_kriteria'];
+            $nilai = $_POST['nilai'];
+
+            $where = "";
+            foreach ($id_kriteria as $key => $value) {
+                if ($nilai[$key] != "") {
+                    $where .= "nilai = $nilai[$key] AND id_kriteria = $value OR ";
+                }
+            }
+
+            // ambil alternatif
+            $where = substr($where, 0, -3);
+            $sql_id_alternatif = "SELECT id_alternatif FROM tb_evaluasi WHERE id_jenis_kulit = $id_jenis_kulit AND ($where)";
+        }
     } else {
-        $sql_id_alternatif = "SELECT id_alternatif FROM tb_evaluasi WHERE id_jenis_kulit = $id_jenis_kulit AND (id_kriteria = $id_kriteria AND nilai = $nilai)";
+        $sql_id_alternatif = "SELECT id_alternatif FROM tb_evaluasi WHERE id_jenis_kulit = $id_jenis_kulit";
     }
 
     $res_id_alternatif = $pdo->Query($sql_id_alternatif);
@@ -91,10 +111,14 @@
        <div class="animated fadeIn">
            <div class="row">
                <div class="col-lg-12">
-                   <button class="btn btn-primary mb-3" type="button" data-bs-toggle="collapse" data-bs-target="#produkCard" aria-expanded="false" aria-controls="produkCard">
-                       Tampilkan Proses Perhitungan
-                   </button>
-                   
+                   <div class="card">
+                       <div class="card-body">
+                           <button class="btn btn-primary btn-block" type="button" data-bs-toggle="collapse" data-bs-target="#produkCard" aria-expanded="false" aria-controls="produkCard">
+                               Tampilkan Proses Perhitungan
+                           </button>
+                       </div>
+                   </div>
+
                    <div class="collapse" id="produkCard">
                        <div class="card">
                            <div class="card-header">
