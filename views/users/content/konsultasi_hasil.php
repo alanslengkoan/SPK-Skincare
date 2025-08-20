@@ -25,7 +25,6 @@
 
     // filter
     if (isset($_POST['model_kriteria'])) {
-       
         $model_kriteria = $_POST['model_kriteria'];
 
         if ($model_kriteria === 'spesifik') {
@@ -46,7 +45,7 @@
 
             // ambil alternatif
             $where = substr($where, 0, -3);
-            $sql_id_alternatif = "SELECT id_alternatif FROM tb_evaluasi WHERE id_jenis_kulit = $id_jenis_kulit AND ($where)";
+            $sql_id_alternatif = "SELECT id_alternatif, COUNT(*) AS jumlah FROM tb_evaluasi WHERE id_jenis_kulit = $id_jenis_kulit AND ($where) GROUP BY id_alternatif ORDER BY COUNT(*) DESC";
         }
     } else {
         $sql_id_alternatif = "SELECT id_alternatif FROM tb_evaluasi WHERE id_jenis_kulit = $id_jenis_kulit";
