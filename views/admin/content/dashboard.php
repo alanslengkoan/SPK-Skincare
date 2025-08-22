@@ -19,7 +19,7 @@
     <div class="content mt-3">
         <div class="col-sm-12">
             <div class="alert  alert-success alert-dismissible fade show" role="alert">
-                Selamat datang <b>ADMIN</b> di sistem pendukung keputusan Metode Smart.
+                Selamat datang <b>ADMIN</b> di SISTEM PENDUKUNG KEPUTUSAN PENENTUAN SKINCARE SESUAI LISENSI BPOM PADA ONLINE SHOP MENGGUNAKAN METODE SMART.
                 <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
@@ -28,7 +28,9 @@
         <div class="col-lg-12">
             <div class="card">
                 <div class="card-body">
-                    <h3 class="card-title">Sistem Pendukung Keputusan Metode Smart</h3>
+                    <h3 class="card-title">
+                        SISTEM PENDUKUNG KEPUTUSAN PENENTUAN SKINCARE SESUAI LISENSI BPOM PADA ONLINE SHOP MENGGUNAKAN METODE SMART
+                    </h3>
                     <p class="text-minify">
                     </p>
                 </div>

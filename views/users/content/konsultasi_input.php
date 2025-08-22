@@ -44,26 +44,13 @@
                                      </select>
                                  </div>
                              </div>
-                             <p>
-                                 Jika anda ingin mengetahui skincare berdasarkan jenis kulit anda, anda dapat memilih jenis kulit lalu klik Proses.
-                             </p>
-                             <p>
-                                 Pilih model kriteria yang ingin digunakan.
-                                 Jika memilih <strong>Spesifik</strong>, Anda dapat menambahkan kriteria pendukung seperti
-                                 kandungan, harga, rating, dan jumlah penjualan.
-                                 Jika memilih <strong>Semua</strong>, maka sistem akan menampilkan semua data tanpa filter kriteria.
-                             </p>
                              <div class="row form-group">
                                  <div class="col col-md-3">
                                      <label class="form-control-label">Model Kriteria</label>
                                  </div>
                                  <div class="col-12 col-md-9">
                                      <div class="form-check form-check-inline">
-                                         <input class="form-check-input" type="radio" name="model_kriteria" id="spesifik" value="spesifik">
-                                         <label class="form-check-label" for="spesifik">Spesifik</label>
-                                     </div>
-                                     <div class="form-check form-check-inline">
-                                         <input class="form-check-input" type="radio" name="model_kriteria" id="semua" value="semua">
+                                         <input class="form-check-input" type="checkbox" name="model_kriteria" id="semua" value="semua">
                                          <label class="form-check-label" for="semua">Semua</label>
                                      </div>
                                  </div>

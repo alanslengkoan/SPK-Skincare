@@ -43,7 +43,7 @@ $baseUrl .= rtrim(dirname($_SERVER['SCRIPT_NAME']), '/');
 
 $path     = parse_url($baseUrl, PHP_URL_PATH);
 $parts    = explode('/', trim($path, '/'));
-$firstTwo = array_slice($parts, 0, 2);
+$firstTwo = array_slice($parts, 0, 1);
 $base     = parse_url($baseUrl, PHP_URL_SCHEME) . '://' . parse_url($baseUrl, PHP_URL_HOST) . '/' . implode('/', $firstTwo);
 ?>
 

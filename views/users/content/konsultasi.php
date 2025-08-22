@@ -28,12 +28,14 @@
                      </div>
                      <div class="card-body">
                          <p class="text-muted">
-                             Selamat datang di halaman konsultasi.
-                             Kami akan membantu Anda menemukan produk skincare yang sesuai dengan kebutuhan Anda.
-                             Silakan lanjutkan untuk memilih model kriteria konsultasi.
+                             Jika anda ingin mengetahui skincare berdasarkan jenis kulit anda, anda dapat memilih jenis kulit lalu klik "Proses".
+                         </p>
+
+                         <p class="text-muted">
+                             Namun jika anda dapat menambahkan kriteria pendukung seperti kandungan, harga, rating, dan jumlah penjualan klik "kriteria tambahan" kemudian pilih setiap kriteria yang Anda inginkan lalu klik "Proses".
                          </p>
                          <a href="konsultasi_input" class="btn btn-primary btn-block">
-                             Lanjut
+                             Proses
                          </a>
                      </div>
                  </div>

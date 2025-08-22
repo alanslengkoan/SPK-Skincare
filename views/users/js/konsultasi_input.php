@@ -13,12 +13,12 @@
 
     <script>
         $(document).on('change', 'input[name="model_kriteria"]', function() {
-            if ($(this).val() === 'spesifik') {
-                $('#content_spesifik').show();
-                $('#content_semua').hide();
-            } else if ($(this).val() === 'semua') {
+            let isSemuaChecked = $('#semua').is(':checked');
+
+            if (isSemuaChecked) {
                 $('#content_semua').show();
-                $('#content_spesifik').hide();
+            } else {
+                $('#content_semua').hide();
             }
         });
 

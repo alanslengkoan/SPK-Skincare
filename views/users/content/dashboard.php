@@ -19,7 +19,7 @@
     <div class="content mt-3">
         <div class="col-sm-12">
             <div class="alert  alert-success alert-dismissible fade show" role="alert">
-                Selamat datang <b>USERS</b> di Sistem Pendukung Keputusan Penentuan Skincare Sesuai Lisensi BPOM pada TikTok Shop Menggunakan Metode SMART.
+                Selamat datang <b>USERS</b> di SISTEM PENDUKUNG KEPUTUSAN PENENTUAN SKINCARE SESUAI LISENSI BPOM PADA ONLINE SHOP MENGGUNAKAN METODE SMART.
                 <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
@@ -29,7 +29,7 @@
             <div class="card">
                 <div class="card-body">
                     <h3 class="card-title">
-                        Sistem Pendukung Keputusan Penentuan Skincare Sesuai Lisensi BPOM pada TikTok Shop Menggunakan Metode SMART
+                        SISTEM PENDUKUNG KEPUTUSAN PENENTUAN SKINCARE SESUAI LISENSI BPOM PADA ONLINE SHOP MENGGUNAKAN METODE SMART
                     </h3>
                     <div class="row justify-content-center">
                         <?php

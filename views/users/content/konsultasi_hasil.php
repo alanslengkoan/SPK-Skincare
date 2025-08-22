@@ -9,6 +9,14 @@
         $jenis_kulit[$row_j->id_jenis_kulit] = $row_j->nama;
     }
 
+    // untuk alternatif
+    $sql_alternatif = "SELECT id_alternatif, nama FROM tb_alternatif";
+    $res_alternatif = $pdo->Query($sql_alternatif);
+    $get_alternatif = [];
+    while ($row_a = $res_alternatif->fetch(PDO::FETCH_OBJ)) {
+        $get_alternatif[$row_a->id_alternatif] = $row_a->nama;
+    }
+
     // untuk kriteria
     $sql_kriteria = "SELECT id_kriteria, nama, bobot, tipe FROM tb_kriteria";
     $res_kriteria = $pdo->Query($sql_kriteria);
@@ -23,38 +31,51 @@
         $nma_kriteria[$row_k->id_kriteria] = $row_k->nama;
     }
 
-    // filter
-    if (isset($_POST['model_kriteria'])) {
-        $model_kriteria = $_POST['model_kriteria'];
-
-        if ($model_kriteria === 'spesifik') {
-            $id_kriteria_spesifik = $_POST['id_kriteria_spesifik'];
-            $nilai_spesifik = $_POST['nilai_spesifik'];
-            
-            $sql_id_alternatif = "SELECT id_alternatif FROM tb_evaluasi WHERE id_jenis_kulit = $id_jenis_kulit AND (id_kriteria = $id_kriteria_spesifik AND nilai = $nilai_spesifik)";
-        } else {
-            $id_kriteria = $_POST['id_kriteria'];
-            $nilai = $_POST['nilai'];
-
-            $where = "";
-            foreach ($id_kriteria as $key => $value) {
-                if ($nilai[$key] != "") {
-                    $where .= "nilai = $nilai[$key] AND id_kriteria = $value OR ";
-                }
-            }
-
-            // ambil alternatif
-            $where = substr($where, 0, -3);
-            $sql_id_alternatif = "SELECT id_alternatif, COUNT(*) AS jumlah FROM tb_evaluasi WHERE id_jenis_kulit = $id_jenis_kulit AND ($where) GROUP BY id_alternatif ORDER BY COUNT(*) DESC";
+    // untuk evaluasi
+    $sql_evaluasi = "SELECT * FROM tb_evaluasi WHERE id_jenis_kulit = $id_jenis_kulit ORDER BY id_alternatif, id_kriteria";
+    $res_evaluasi = $pdo->Query($sql_evaluasi);
+    $sample = [];
+    while ($row_e = $res_evaluasi->fetch(PDO::FETCH_OBJ)) {
+        if (!isset($sample[$row_e->id_alternatif])) {
+            $sample[$row_e->id_alternatif] = [];
         }
-    } else {
-        $sql_id_alternatif = "SELECT id_alternatif FROM tb_evaluasi WHERE id_jenis_kulit = $id_jenis_kulit";
+        $sample[$row_e->id_alternatif][$row_e->id_kriteria] = $row_e->nilai;
     }
 
-    $res_id_alternatif = $pdo->Query($sql_id_alternatif);
+    $data = [];
+    foreach ($sample as $key => $value) {
+        $data[$key]['alternatif'] = $get_alternatif[$key];
+        foreach ($value as $k => $v) {
+            $data[$key][$k] = $v;
+        }
+    }
+
+    if (isset($_POST['model_kriteria'])) {
+        $id_kriteria = $_POST['id_kriteria'];
+        $nilai = $_POST['nilai'];
+
+        $filter = [];
+        foreach ($id_kriteria as $key => $value) {
+            if ($value != '' && $nilai[$key] != '') {
+                $filter[$value] = $nilai[$key];
+            }
+        }
+
+        $result = array_filter($data, function ($row) use ($filter) {
+            foreach ($filter as $key => $val) {
+                if (!isset($row[$key]) || $row[$key] != $val) {
+                    return false;
+                }
+            }
+            return true;
+        });
+    } else {
+        $result = $data;
+    }
+
     $get_id_alternatif = [];
-    while ($row_e = $res_id_alternatif->fetch(PDO::FETCH_OBJ)) {
-        $get_id_alternatif[] = $row_e->id_alternatif;
+    foreach ($result as $key => $value) {
+        $get_id_alternatif[] = $key;
     }
 
     if (count($get_id_alternatif) == 0) {
