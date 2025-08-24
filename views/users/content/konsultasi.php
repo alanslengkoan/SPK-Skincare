@@ -32,7 +32,7 @@
                          </p>
 
                          <p class="text-muted">
-                             Namun jika anda dapat menambahkan kriteria pendukung seperti kandungan, harga, rating, dan jumlah penjualan klik "kriteria tambahan" kemudian pilih setiap kriteria yang Anda inginkan lalu klik "Proses".
+                             Namun jika anda ingin menambahkan kriteria pendukung seperti kandungan, harga, rating, dan jumlah penjualan maka centang “semua” pada model kriteria, dan pilih setiap kriteria yang Anda inginkan kemudian klik "Proses".
                          </p>
                          <a href="konsultasi_input" class="btn btn-primary btn-block">
                              Proses
