@@ -76,18 +76,38 @@ $base     = parse_url($baseUrl, PHP_URL_SCHEME) . '://' . parse_url($baseUrl, PH
     p {
         margin: 0;
     }
+
+    .kop-surat td {
+        vertical-align: middle;
+        text-align: center;
+    }
+
+    .kop-title {
+        font-size: 16px;
+        font-weight: bold;
+    }
+
+    .kop-subtitle {
+        font-size: 14px;
+    }
 </style>
 <!-- CSS -->
 
 <div class="judul">
-    <table align="center">
-        <tr>
-            <td width="600" align="center">
-                <h4>SISTEM PENDUKUNG KEPUTUSAN METODE SMART</h4>
+    <table class="kop-surat" align="center">
+        <tr align="center" width="100%">
+            <td>
+                <img src="<?= $base . '/assets/page/img/logo.jpg' ?>" width="80" height="80" />
+            </td>
+            <td>
+                <p class="kop-title">Rarif Store</p>
+                <p class="kop-subtitle">Sistem Pendukung Keputusan</p>
+                <p class="kop-subtitle">Jl. H. M Yasin Limpo No.6, Romangpolong Kec. Somba Opu, <br> Kabupaten Gowa, Sulawesi Selatan 92113 Indonesia</p>
+                <p class="kop-subtitle">Email: info@domain.com | Telp: (021) 1234567</p>
             </td>
         </tr>
     </table>
-
+    
     <hr>
 
     <br /><br />
@@ -109,9 +129,9 @@ $base     = parse_url($baseUrl, PHP_URL_SCHEME) . '://' . parse_url($baseUrl, PH
             <?php
             arsort($hasil_metode);
             $index = key($hasil_metode);
-            
+
             $ranking = 1;
-            foreach ($hasil_metode as $key => $value) {?>
+            foreach ($hasil_metode as $key => $value) { ?>
                 <?php if ($value > 0.5) { ?>
                     <tr>
                         <td><?= $ranking++ ?></td>

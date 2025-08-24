@@ -38,7 +38,6 @@
                                         <th>Username</th>
                                         <th>Tanggal Lahir</th>
                                         <th>Tempat Lahir</th>
-                                        <th>Jenis Kelamin</th>
                                         <th>Alamat</th>
                                         <th>Aksi</th>
                                     </tr>
@@ -59,7 +58,6 @@
                                                 <td><?= $row->username; ?></td>
                                                 <td><?= $row->tgl_lahir; ?></td>
                                                 <td><?= $row->tmp_lahir; ?></td>
-                                                <td><?= $row->kelamin; ?></td>
                                                 <td><?= $row->alamat; ?></td>
                                                 <td>
                                                     <button class="btn btn-warning btn-sm btn-action" type="button" id="res-pass" data-id="<?= $row->id_users ?>"><i class="fa fa-refresh"></i>&nbsp;Reset Password</button>&nbsp;
