@@ -90,9 +90,8 @@ $base     = parse_url($baseUrl, PHP_URL_SCHEME) . '://' . parse_url($baseUrl, PH
             <td>
                 <img src="<?= $base . '/assets/page/img/logo.jpg' ?>" width="80" height="80" />
             </td>
-            <td>
+            <td width="600">
                 <p class="kop-title">Rarif Store</p>
-                <p class="kop-subtitle">Sistem Pendukung Keputusan</p>
                 <p class="kop-subtitle">Jl. H. M Yasin Limpo No.6, Romangpolong Kec. Somba Opu, <br> Kabupaten Gowa, Sulawesi Selatan 92113 Indonesia</p>
                 <p class="kop-subtitle">Email: info@domain.com | Telp: (021) 1234567</p>
             </td>
