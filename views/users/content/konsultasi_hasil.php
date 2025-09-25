@@ -329,15 +329,18 @@
                            <table class="table table-striped table-bordered table-hover">
                                <thead align="center">
                                    <tr>
+                                       <th>Peringkat</th>
                                        <th>Nama</th>
                                        <th>Hasil</th>
                                    </tr>
                                </thead>
                                <tbody align="center">
                                    <?php
+                                    $rank = 1;
                                     foreach ($perangkingan as $key => $value) { ?>
                                        <?php if ($perangkingan[$key] > 0.5) { ?>
                                            <tr>
+                                               <td><?= $rank++ ?></td>
                                                <td><?= $alternatif[$key] ?></td>
                                                <td><?= number_format($perangkingan[$key], 4, '.', '') ?></td>
                                            </tr>

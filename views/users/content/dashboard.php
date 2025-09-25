@@ -19,7 +19,7 @@
     <div class="content mt-3">
         <div class="col-sm-12">
             <div class="alert  alert-success alert-dismissible fade show" role="alert">
-                Selamat datang <b>USERS</b> di SISTEM PENDUKUNG KEPUTUSAN PENENTUAN SKINCARE SESUAI LISENSI BPOM PADA ONLINE SHOP MENGGUNAKAN METODE SMART.
+                Selamat datang <b>USERS</b> di Sistem Pendukung Keputusan Penentuan Skincare BPOM Berdasarkan Jenis Kulit Wajah Menggunakan Metode SMART.
                 <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
