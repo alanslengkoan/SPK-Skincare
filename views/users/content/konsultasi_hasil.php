@@ -338,7 +338,7 @@
                                    <?php
                                     $rank = 1;
                                     foreach ($perangkingan as $key => $value) { ?>
-                                       <?php if ($perangkingan[$key] > 0.5) { ?>
+                                       <?php if ($perangkingan[$key] >= 0.5) { ?>
                                            <tr>
                                                <td><?= $rank++ ?></td>
                                                <td><?= $alternatif[$key] ?></td>

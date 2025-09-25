@@ -165,7 +165,7 @@ $base     = parse_url($baseUrl, PHP_URL_SCHEME) . '://' . parse_url($baseUrl, PH
             <?php
             $ranking = 1;
             foreach ($hasil_metode as $key => $value) { ?>
-                <?php if ($value > 0.5) { ?>
+                <?php if ($value >= 0.5) { ?>
                     <tr>
                         <td><?= $ranking++ ?></td>
                         <td><?= $alternatif[$key]['nama'] ?></td>
