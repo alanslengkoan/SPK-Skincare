@@ -28,9 +28,6 @@
         <div class="col-lg-12">
             <div class="card">
                 <div class="card-body">
-                    <h3 class="card-title">
-                        SISTEM PENDUKUNG KEPUTUSAN PENENTUAN SKINCARE SESUAI LISENSI BPOM PADA ONLINE SHOP MENGGUNAKAN METODE SMART
-                    </h3>
                     <div class="row justify-content-center">
                         <?php
                         $sql    = "SELECT tb_alternatif.id_alternatif, tb_alternatif.nama, tb_alternatif.gambar FROM tb_alternatif ORDER BY tb_alternatif.id_alternatif ASC";

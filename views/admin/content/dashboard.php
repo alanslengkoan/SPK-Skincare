@@ -25,17 +25,6 @@
                 </button>
             </div>
         </div>
-        <div class="col-lg-12">
-            <div class="card">
-                <div class="card-body">
-                    <h3 class="card-title">
-                        SISTEM PENDUKUNG KEPUTUSAN PENENTUAN SKINCARE SESUAI LISENSI BPOM PADA ONLINE SHOP MENGGUNAKAN METODE SMART
-                    </h3>
-                    <p class="text-minify">
-                    </p>
-                </div>
-            </div>
-        </div>
         <div class="col-xl-4 col-lg-6">
             <div class="card">
                 <div class="card-body">

@@ -170,7 +170,7 @@
                                            <tr>
                                                <td><?= $value ?></td>
                                                <td><?= $bobot[$key] ?></td>
-                                               <td><?= round($w[$key], 4) ?></td>
+                                               <td><?= number_format($w[$key], 4, '.', '') ?></td>
                                            </tr>
                                        <?php } ?>
                                    </tbody>
@@ -197,7 +197,7 @@
                                            <tr>
                                                <td><?= $value['alternatif'] ?></td>
                                                <?php foreach ($kriteria as $k => $v) { ?>
-                                                   <td><?= $sample[$key][$k] ?></td>
+                                                   <td><?= number_format($sample[$key][$k], 4, '.', '') ?></td>
                                                <?php } ?>
                                            </tr>
                                        <?php } ?>
@@ -241,13 +241,13 @@
                                        <tr>
                                            <td>Min</td>
                                            <?php foreach ($kriteria as $key => $value) { ?>
-                                               <td><?= $c_min[$key] ?></td>
+                                               <td><?= number_format($c_min[$key], 4, '.', '') ?></td>
                                            <?php } ?>
                                        </tr>
                                        <tr>
                                            <td>Max</td>
                                            <?php foreach ($kriteria as $key => $value) { ?>
-                                               <td><?= $c_max[$key] ?></td>
+                                               <td><?= number_format($c_max[$key], 4, '.', '') ?></td>
                                            <?php } ?>
                                        </tr>
                                    </thead>
@@ -293,7 +293,7 @@
                                            <tr>
                                                <td><?= $value['alternatif'] ?></td>
                                                <?php for ($i = 1; $i <= $jumlah_kriteria; $i++) { ?>
-                                                   <td><?= round($value[$i]) ?></td>
+                                                   <td><?= number_format($value[$i], 4, '.', '') ?></td>
                                                <?php } ?>
                                            </tr>
                                        <?php } ?>
@@ -312,59 +312,39 @@
                         ?>
                    </div>
 
-                   <div class="card">
-                       <div class="card-header">
-                           <h5>Hasil</h5>
-                       </div>
-                       <div class="card-body">
-                           <table class="table table-striped table-bordered table-hover">
-                               <thead align="center">
-                                   <tr>
-                                       <th>Nama</th>
-                                       <th>Hasil</th>
-                                   </tr>
-                               </thead>
-                               <tbody align="center">
-                                   <?php foreach ($perangkingan as $key => $value) { ?>
-                                       <tr>
-                                           <td><?= $alternatif[$key] ?></td>
-                                           <td><?= round($perangkingan[$key], 4) ?></td>
-                                       </tr>
-                                   <?php } ?>
-                               </tbody>
-                           </table>
-                       </div>
-                   </div>
+                   <?php
+                    arsort($perangkingan);
+                    $index = key($perangkingan);
+                    ?>
+
                    <div class="card">
                        <div class="card-header">
                            <h5>Perangkingan (Hasil Akhir)</h5>
                        </div>
                        <div class="card-body">
+                           <h3>
+                               Berdasarkan Hasil Analisis Algoritma maka diperoleh rekomendasi keputusan untuk jenis kulit <b><?= $jenis_kulit[$id_jenis_kulit] ?></b> yaitu <b><?= $alternatif[$index] ?></b> dengan nilai akhir <b><?= number_format($perangkingan[$index], 4, '.', '') ?></b>.
+                           </h3>
+                           <hr>
                            <table class="table table-striped table-bordered table-hover">
                                <thead align="center">
                                    <tr>
-                                       <th>Peringkat</th>
                                        <th>Nama</th>
                                        <th>Hasil</th>
                                    </tr>
                                </thead>
                                <tbody align="center">
                                    <?php
-                                    $rank = 1;
-                                    arsort($perangkingan);
-                                    $index = key($perangkingan);
                                     foreach ($perangkingan as $key => $value) { ?>
                                        <?php if ($perangkingan[$key] > 0.5) { ?>
                                            <tr>
-                                               <td><?= $rank++ ?></td>
                                                <td><?= $alternatif[$key] ?></td>
-                                               <td><?= round($perangkingan[$key], 4) ?></td>
+                                               <td><?= number_format($perangkingan[$key], 4, '.', '') ?></td>
                                            </tr>
                                        <?php } ?>
                                    <?php } ?>
                                </tbody>
                            </table>
-                           Berdasarkan Hasil Analisis Algoritma maka diperoleh rekomendasi keputusan untuk jenis kulit <b><?= $jenis_kulit[$id_jenis_kulit] ?></b> yaitu <b><?= $alternatif[$index] ?></b> dengan nilai akhir <b><?= round($perangkingan[$index], 4) ?></b>.
                        </div>
                    </div>
                </div>

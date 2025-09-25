@@ -61,6 +61,7 @@
                         <div class="form-group">
                             <label>Tanggal Lahir&nbsp;*</label>
                             <input type="date" class="form-control form-control-sm" name="tgl_lahir" id="tgl_lahir" />
+                            <div id="dob-error" style="color: red; font-size: 14px; margin-top: 5px;"></div>
                             <small class="help-block form-text error"></small>
                         </div>
                         <div class="form-group">
@@ -179,6 +180,33 @@
                 } else {
                     $(this).removeClass('is-invalid').addClass('is-valid');
                     $(this).parents('.form-group').find('.error').html('');
+                }
+            });
+        }();
+
+        let untukValidasiUmur = function() {
+            $("#tgl_lahir").on("change", function() {
+                let dob = $(this).val();
+                let errorDiv = $("#dob-error");
+                errorDiv.text(""); // reset pesan error
+
+                if (!dob) return;
+
+                let birthDate = new Date(dob);
+                let today = new Date();
+
+                let age = today.getFullYear() - birthDate.getFullYear();
+                let monthDiff = today.getMonth() - birthDate.getMonth();
+
+                // cek ulang tahun sudah lewat atau belum
+                if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < birthDate.getDate())) {
+                    age--;
+                }
+
+                if (age < 13) {
+                    errorDiv.text("Anda harus berusia minimal 13 tahun untuk mendaftar.");
+                } else {
+                    errorDiv.text(""); // valid → hapus error
                 }
             });
         }();

@@ -32,8 +32,9 @@ while ($row_a = $res_alternatif->fetch(PDO::FETCH_OBJ)) {
 
 // ambil data laporan
 $id_riwayat     = $_GET['id_riwayat'];
-$qryLaporan     = $pdo->GetWhere('tb_riwayat', 'id_riwayat', $id_riwayat);
-$rowLaporan     = $qryLaporan->fetch(PDO::FETCH_OBJ);
+$sqlRiwayat = "SELECT r.id_riwayat, r.hasil, r.id_jenis_kulit, u.nama, m.tgl_lahir, m.tmp_lahir, m.telepon FROM tb_riwayat AS r LEFT JOIN tb_member AS m ON m.id_member = r.id_member LEFT JOIN tb_users AS u ON u.id_users = m.id_users WHERE id_riwayat = '$id_riwayat'";
+$resRiwayat     = $pdo->Query($sqlRiwayat);
+$rowLaporan     = $resRiwayat->fetch(PDO::FETCH_OBJ);
 $hasil_metode   = json_decode($rowLaporan->hasil, true);
 $id_jenis_kulit = $rowLaporan->id_jenis_kulit;
 
@@ -111,7 +112,43 @@ $base     = parse_url($baseUrl, PHP_URL_SCHEME) . '://' . parse_url($baseUrl, PH
 
     <br /><br />
 
+    <h3>Detail User</h3>
+
+    <br /><br />
+
+    <table align="center" border="1">
+        <tr>
+            <td>Nama</td>
+            <td><?= $rowLaporan->nama ?></td>
+        </tr>
+        <tr>
+            <td>Tanggal Lahir</td>
+            <td><?= $rowLaporan->tgl_lahir ?></td>
+        </tr>
+        <tr>
+            <td>Tempat Lahir</td>
+            <td><?= $rowLaporan->tmp_lahir ?></td>
+        </tr>
+        <tr>
+            <td>No Telp</td>
+            <td><?= $rowLaporan->telepon ?></td>
+        </tr>
+    </table>
+
+    <br /><br />
+
     <h3>Hasil Konsultasi</h3>
+
+    <br /><br />
+
+    <?php
+    arsort($hasil_metode);
+    $index = key($hasil_metode);
+    ?>
+
+    <h4>
+        Berdasarkan Hasil Analisis Algoritma maka diperoleh rekomendasi keputusan untuk jenis kulit <b><?= $jenis_kulit[$id_jenis_kulit] ?></b> yaitu <b><?= $alternatif[$index]['nama'] ?></b> dengan nilai akhir <b><?= $hasil_metode[$index] ?></b>.
+    </h4>
 
     <br /><br />
 
@@ -126,9 +163,6 @@ $base     = parse_url($baseUrl, PHP_URL_SCHEME) . '://' . parse_url($baseUrl, PH
         </thead>
         <tbody align="center">
             <?php
-            arsort($hasil_metode);
-            $index = key($hasil_metode);
-
             $ranking = 1;
             foreach ($hasil_metode as $key => $value) { ?>
                 <?php if ($value > 0.5) { ?>
@@ -142,12 +176,6 @@ $base     = parse_url($baseUrl, PHP_URL_SCHEME) . '://' . parse_url($baseUrl, PH
             <?php } ?>
         </tbody>
     </table>
-
-    <br /><br />
-
-    <p>
-        Berdasarkan Hasil Analisis Algoritma maka diperoleh rekomendasi keputusan untuk jenis kulit <b><?= $jenis_kulit[$id_jenis_kulit] ?></b> yaitu <b><?= $alternatif[$index]['nama'] ?></b> dengan nilai akhir <b><?= $hasil_metode[$index] ?></b>.
-    </p>
 </div>
 
 <?php
