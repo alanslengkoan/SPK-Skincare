@@ -396,6 +396,12 @@
                                     $rank = 1;
                                     foreach ($perangkingan as $key => $value) { ?>
                                        <?php if (isset($_POST['model_kriteria'])) { ?>
+                                           <tr>
+                                               <td><?= $rank++ ?></td>
+                                               <td><?= $alternatif[$key] ?></td>
+                                               <td><?= number_format($perangkingan[$key], 4, '.', '') ?></td>
+                                           </tr>
+                                       <?php } else { ?>
                                            <?php if ($perangkingan[$key] >= 0.5) { ?>
                                                <tr>
                                                    <td><?= $rank++ ?></td>
@@ -403,12 +409,6 @@
                                                    <td><?= number_format($perangkingan[$key], 4, '.', '') ?></td>
                                                </tr>
                                            <?php } ?>
-                                       <?php } else { ?>
-                                           <tr>
-                                               <td><?= $rank++ ?></td>
-                                               <td><?= $alternatif[$key] ?></td>
-                                               <td><?= number_format($perangkingan[$key], 4, '.', '') ?></td>
-                                           </tr>
                                        <?php } ?>
                                    <?php } ?>
                                </tbody>
