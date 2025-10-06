@@ -116,14 +116,10 @@ $base     = parse_url($baseUrl, PHP_URL_SCHEME) . '://' . parse_url($baseUrl, PH
 
     <br /><br />
 
-    <table align="center">
+    <table align="left">
         <tr>
             <td align="left">Nama</td>
             <td align="left">:&nbsp;<?= $rowLaporan->nama ?></td>
-        </tr>
-        <tr>
-            <td align="left">Tempat Lahir</td>
-            <td align="left">:&nbsp;<?= $rowLaporan->tmp_lahir ?></td>
         </tr>
         <tr>
             <td align="left">No Telp</td>
@@ -147,7 +143,7 @@ $base     = parse_url($baseUrl, PHP_URL_SCHEME) . '://' . parse_url($baseUrl, PH
     ?>
 
     <h4>
-        Berdasarkan Hasil Analisis Algoritma maka diperoleh rekomendasi keputusan untuk jenis kulit <b><?= $jenis_kulit[$id_jenis_kulit] ?></b> yaitu <b><?= $alternatif[$index]['nama'] ?></b> dengan nilai akhir <b><?= $hasil_metode[$index] ?></b>.
+        Berdasarkan Hasil Analisis Algoritma maka diperoleh rekomendasi keputusan untuk jenis kulit <b><?= $jenis_kulit[$id_jenis_kulit] ?></b> yaitu <b><?= $alternatif[$index]['nama'] ?></b> dengan nilai akhir <b><?= number_format($hasil_metode[$index], 4) ?></b>.
     </h4>
 
     <br /><br />

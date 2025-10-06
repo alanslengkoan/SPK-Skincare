@@ -79,7 +79,64 @@
     }
 
     if (count($get_id_alternatif) == 0) {
-        echo "<script>alert('Skincare yang anda cari saat ini belum tersedia.\\nMohon Maaf 😔');window.location.href = 'konsultasi';</script>";
+        echo "
+        <style>
+            #customAlert {
+                position: fixed;
+                top: 0; left: 0;
+                width: 100%; height: 100%;
+                background: rgba(0,0,0,0.6);
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                z-index: 9999;
+            }
+            #customAlertBox {
+                background: #fff;
+                padding: 30px 40px;
+                border-radius: 12px;
+                text-align: center;
+                box-shadow: 0 0 10px rgba(0,0,0,0.4);
+                font-size: 20px;
+                max-width: 400px;
+                line-height: 1.5;
+            }
+            #customAlertBox h3 {
+                color: #333;
+                font-size: 22px;
+                margin-bottom: 10px;
+            }
+            #customAlertBox p {
+                font-size: 18px;
+                margin-bottom: 20px;
+            }
+            #customAlertBox button {
+                background: #007bff;
+                color: #fff;
+                border: none;
+                padding: 10px 20px;
+                border-radius: 8px;
+                cursor: pointer;
+                font-size: 16px;
+            }
+            #customAlertBox button:hover {
+                background: #0056b3;
+            }
+        </style>
+        <div id='customAlert'>
+            <div id='customAlertBox'>
+                <h3>Skincare belum tersedia 😔</h3>
+                <p>Skincare yang anda cari saat ini belum tersedia.<br><b>Mohon Maaf 🙏</b></p>
+                <button onclick=\"closeAlert()\">OK</button>
+            </div>
+        </div>
+        <script>
+            function closeAlert() {
+                document.getElementById('customAlert').style.display = 'none';
+                window.location.href = 'konsultasi';
+            }
+        </script>
+        ";
         exit;
     }
 
