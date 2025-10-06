@@ -11,6 +11,14 @@ $mylog = new my_login;
 // untuk class my_function
 $myfun = new my_function;
 
+// untuk jenis_kulit
+$sql_jenis_kulit = "SELECT id_jenis_kulit, nama FROM tb_jenis_kulit";
+$res_jenis_kulit = $pdo->Query($sql_jenis_kulit);
+$jenis_kulit     = [];
+while ($row_j = $res_jenis_kulit->fetch(PDO::FETCH_OBJ)) {
+    $jenis_kulit[$row_j->id_jenis_kulit] = $row_j->nama;
+}
+
 // untuk alternatif
 $sql_alternatif = "SELECT id_alternatif, nama, gambar FROM tb_alternatif";
 $res_alternatif = $pdo->Query($sql_alternatif);
@@ -23,10 +31,12 @@ while ($row_a = $res_alternatif->fetch(PDO::FETCH_OBJ)) {
 }
 
 // ambil data laporan
-$id_riwayat   = $_GET['id_riwayat'];
-$qryLaporan   = $pdo->GetWhere('tb_riwayat', 'id_riwayat', $id_riwayat);
-$rowLaporan   = $qryLaporan->fetch(PDO::FETCH_OBJ);
-$hasil_metode = json_decode($rowLaporan->hasil, true);
+$id_riwayat     = $_GET['id_riwayat'];
+$sqlRiwayat     = "SELECT r.id_riwayat, r.hasil, r.id_jenis_kulit, r.tgl, u.nama, m.tgl_lahir, m.tmp_lahir, m.telepon FROM tb_riwayat AS r LEFT JOIN tb_member AS m ON m.id_member = r.id_member LEFT JOIN tb_users AS u ON u.id_users = m.id_users WHERE id_riwayat = '$id_riwayat'";
+$resRiwayat     = $pdo->Query($sqlRiwayat);
+$rowLaporan     = $resRiwayat->fetch(PDO::FETCH_OBJ);
+$hasil_metode   = json_decode($rowLaporan->hasil, true);
+$id_jenis_kulit = $rowLaporan->id_jenis_kulit;
 
 $baseUrl  = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? "https" : "http");
 $baseUrl .= "://{$_SERVER['HTTP_HOST']}";
@@ -102,7 +112,43 @@ $base     = parse_url($baseUrl, PHP_URL_SCHEME) . '://' . parse_url($baseUrl, PH
 
     <br /><br />
 
+    <h3>Detail User</h3>
+
+    <br /><br />
+
+    <table align="center">
+        <tr>
+            <td align="left">Nama</td>
+            <td align="left">:&nbsp;<?= $rowLaporan->nama ?></td>
+        </tr>
+        <tr>
+            <td align="left">Tempat Lahir</td>
+            <td align="left">:&nbsp;<?= $rowLaporan->tmp_lahir ?></td>
+        </tr>
+        <tr>
+            <td align="left">No Telp</td>
+            <td align="left">:&nbsp;<?= $rowLaporan->telepon ?></td>
+        </tr>
+        <tr>
+            <td align="left">Tanggal Konsultasi</td>
+            <td align="left">:&nbsp;<?= $rowLaporan->tgl ?></td>
+        </tr>
+    </table>
+
+    <br /><br />
+
     <h3>Hasil Konsultasi</h3>
+
+    <br /><br />
+
+    <?php
+    arsort($hasil_metode);
+    $index = key($hasil_metode);
+    ?>
+
+    <h4>
+        Berdasarkan Hasil Analisis Algoritma maka diperoleh rekomendasi keputusan untuk jenis kulit <b><?= $jenis_kulit[$id_jenis_kulit] ?></b> yaitu <b><?= $alternatif[$index]['nama'] ?></b> dengan nilai akhir <b><?= $hasil_metode[$index] ?></b>.
+    </h4>
 
     <br /><br />
 
@@ -117,26 +163,19 @@ $base     = parse_url($baseUrl, PHP_URL_SCHEME) . '://' . parse_url($baseUrl, PH
         </thead>
         <tbody align="center">
             <?php
-            arsort($hasil_metode);
-            $index = key($hasil_metode);
-
             $ranking = 1;
             foreach ($hasil_metode as $key => $value) { ?>
-                <tr>
-                    <td><?= $ranking++ ?></td>
-                    <td><?= $alternatif[$key]['nama'] ?></td>
-                    <td><img src="<?= $base . '/assets/uploads/alternatif/' . $alternatif[$key]['gambar'] ?>" width="100" height="100" /></td>
-                    <td><?= $value ?></td>
-                </tr>
+                <?php if ($value >= 0.5) { ?>
+                    <tr>
+                        <td><?= $ranking++ ?></td>
+                        <td><?= $alternatif[$key]['nama'] ?></td>
+                        <td><img src="<?= $base . '/assets/uploads/alternatif/' . $alternatif[$key]['gambar'] ?>" width="100" height="100" /></td>
+                        <td><?= round($value, 4) ?></td>
+                    </tr>
+                <?php } ?>
             <?php } ?>
         </tbody>
     </table>
-
-    <br /><br />
-
-    <p>
-        Berdasarkan Hasil perhitungan Metode Smart, Alternatif <b><?= $alternatif[$index]['nama'] ?></b> dengan nilai akhir <b><?= $hasil_metode[$index] ?></b> adalah Peringkat 1.
-    </p>
 </div>
 
 <?php

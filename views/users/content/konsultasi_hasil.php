@@ -79,7 +79,7 @@
     }
 
     if (count($get_id_alternatif) == 0) {
-        echo "<script>alert('Data tidak ditemukan'); window.location.href = 'konsultasi';</script>";
+        echo "<script>alert('Skincare yang anda cari saat ini belum tersedia.\\nMohon Maaf 😔');window.location.href = 'konsultasi';</script>";
         exit;
     }
 

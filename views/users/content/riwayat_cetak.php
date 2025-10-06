@@ -32,7 +32,7 @@ while ($row_a = $res_alternatif->fetch(PDO::FETCH_OBJ)) {
 
 // ambil data laporan
 $id_riwayat     = $_GET['id_riwayat'];
-$sqlRiwayat = "SELECT r.id_riwayat, r.hasil, r.id_jenis_kulit, u.nama, m.tgl_lahir, m.tmp_lahir, m.telepon FROM tb_riwayat AS r LEFT JOIN tb_member AS m ON m.id_member = r.id_member LEFT JOIN tb_users AS u ON u.id_users = m.id_users WHERE id_riwayat = '$id_riwayat'";
+$sqlRiwayat     = "SELECT r.id_riwayat, r.hasil, r.id_jenis_kulit, r.tgl, u.nama, m.tgl_lahir, m.tmp_lahir, m.telepon FROM tb_riwayat AS r LEFT JOIN tb_member AS m ON m.id_member = r.id_member LEFT JOIN tb_users AS u ON u.id_users = m.id_users WHERE id_riwayat = '$id_riwayat'";
 $resRiwayat     = $pdo->Query($sqlRiwayat);
 $rowLaporan     = $resRiwayat->fetch(PDO::FETCH_OBJ);
 $hasil_metode   = json_decode($rowLaporan->hasil, true);
@@ -116,22 +116,22 @@ $base     = parse_url($baseUrl, PHP_URL_SCHEME) . '://' . parse_url($baseUrl, PH
 
     <br /><br />
 
-    <table align="center" border="1">
+    <table align="center">
         <tr>
-            <td>Nama</td>
-            <td><?= $rowLaporan->nama ?></td>
+            <td align="left">Nama</td>
+            <td align="left">:&nbsp;<?= $rowLaporan->nama ?></td>
         </tr>
         <tr>
-            <td>Tanggal Lahir</td>
-            <td><?= $rowLaporan->tgl_lahir ?></td>
+            <td align="left">Tempat Lahir</td>
+            <td align="left">:&nbsp;<?= $rowLaporan->tmp_lahir ?></td>
         </tr>
         <tr>
-            <td>Tempat Lahir</td>
-            <td><?= $rowLaporan->tmp_lahir ?></td>
+            <td align="left">No Telp</td>
+            <td align="left">:&nbsp;<?= $rowLaporan->telepon ?></td>
         </tr>
         <tr>
-            <td>No Telp</td>
-            <td><?= $rowLaporan->telepon ?></td>
+            <td align="left">Tanggal Konsultasi</td>
+            <td align="left">:&nbsp;<?= $rowLaporan->tgl ?></td>
         </tr>
     </table>
 
