@@ -380,7 +380,7 @@
                        </div>
                        <div class="card-body">
                            <h3>
-                               Berdasarkan Hasil Analisis Algoritma maka diperoleh rekomendasi keputusan untuk jenis kulit <b><?= $jenis_kulit[$id_jenis_kulit] ?></b> yaitu <b><?= $alternatif[$index] ?></b> dengan nilai akhir <b><?= number_format($perangkingan[$index], 4, '.', '') ?></b>.
+                               Nilai akhir yang diperoleh untuk jenis kulit <b><?= $jenis_kulit[$id_jenis_kulit] ?></b> adalah <b><?= number_format($perangkingan[$index], 4, '.', '') ?></b>, dengan rekomendasi produk yaitu <b><?= $alternatif[$index] ?></b>.
                            </h3>
                            <hr>
                            <table class="table table-striped table-bordered table-hover">
@@ -395,7 +395,15 @@
                                    <?php
                                     $rank = 1;
                                     foreach ($perangkingan as $key => $value) { ?>
-                                       <?php if ($perangkingan[$key] >= 0.5) { ?>
+                                       <?php if (isset($_POST['model_kriteria'])) { ?>
+                                           <?php if ($perangkingan[$key] >= 0.5) { ?>
+                                               <tr>
+                                                   <td><?= $rank++ ?></td>
+                                                   <td><?= $alternatif[$key] ?></td>
+                                                   <td><?= number_format($perangkingan[$key], 4, '.', '') ?></td>
+                                               </tr>
+                                           <?php } ?>
+                                       <?php } else { ?>
                                            <tr>
                                                <td><?= $rank++ ?></td>
                                                <td><?= $alternatif[$key] ?></td>
